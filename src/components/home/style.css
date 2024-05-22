@@ -1,0 +1,24 @@
+  .filter-select-box { display: none; }
+
+  .filter-list {
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 1%;
+   margin-left:20px;
+    align-items: center;
+    gap: 25px;
+    padding-left: 5px;
+    margin-bottom: 30px;
+  }
+
+  .filter-item button {
+    background-color: rgb(179, 74, 42);
+    border-radius: 25px;
+    width:80px;
+    padding: 5%;
+    color: var(--light-gray);
+  }
+
+  .filter-item button:hover { background-color: brown; }
+
+  .filter-item button.active { color: var(--orange-yellow-crayola); }

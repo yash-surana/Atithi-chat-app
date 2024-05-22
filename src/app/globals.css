@@ -1,0 +1,124 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+	:root {
+		--background: 45, 100%, 95%; /* Light cream */
+		--foreground: 0, 0%, 10%; /* Dark text for contrast */
+
+		/* CLASSES ADDED BY US */
+		--container: 45, 100%, 95%; /* Light cream */
+		--left-panel: 45, 100%, 90%; /* Lighter cream for left panel */
+
+		--gray-primary: 45, 100%, 90%; /* Light cream */
+		--gray-secondary: 40, 100%, 95%; /* Light orange */
+
+		--chat-hover: 40, 100%, 90%; /* Hover state for chat - light orange */
+
+		--green-primary: 150, 100%, 40%; /* Green for contrast */
+		--green-chat: 150, 100%, 90%; /* Light green for chat background */
+
+		--orange-primary: 35, 100%, 50%; /* Bright orange for playful elements */
+		--orange-secondary: 35, 100%, 85%; /* Light orange for secondary playful elements */
+		/* CLASSES ADDED BY US */
+
+		--card: 45, 100%, 95%; /* Light cream for card background */
+		--card-foreground: 0, 0%, 10%; /* Dark text for contrast */
+
+		--popover: 45, 100%, 95%; /* Light cream for popover */
+		--popover-foreground: 0, 0%, 10%; /* Dark text for contrast */
+
+		--primary: 35, 100%, 50%; /* Bright orange for primary elements */
+		--primary-foreground: 0, 0%, 100%; /* White text for primary elements */
+
+		--secondary: 40, 100%, 70%; /* Medium orange for secondary elements */
+		--secondary-foreground: 0, 0%, 10%; /* Dark text for contrast */
+
+		--muted: 40, 100%, 85%; /* Muted light orange */
+		--muted-foreground: 40, 100%, 50%; /* Mid-tone orange for muted elements */
+
+		--accent: 35, 100%, 70%; /* Medium orange for accent elements */
+		--accent-foreground: 0, 0%, 100%; /* White text for accents */
+
+		--destructive: 0, 84.2%, 60.2%; /* Red for destructive elements */
+		--destructive-foreground: 0, 0%, 100%; /* White text for destructive elements */
+
+		--border: 40, 100%, 70%; /* Border color in medium orange */
+		--input: 40, 100%, 70%; /* Input field color in medium orange */
+		--ring: 0, 0%, 10%; /* Dark color for focus ring */
+
+		--radius: 0.5rem;
+	}
+
+	.dark {
+		--background: 30, 100%, 10%; /* Dark cream for background */
+		--foreground: 30, 100%, 95%; /* Light text for contrast */
+
+		/* CLASSES ADDED BY US: */
+		--container: 30, 100%, 10%; /* Dark cream */
+
+		--gray-primary: 30, 100%, 15%; /* Dark cream for gray primary */
+		--gray-secondary: 30, 100%, 20%; /* Darker cream */
+
+		--left-panel: 30, 100%, 15%; /* Dark cream for left panel */
+		--chat-hover: 30, 100%, 20%; /* Hover state for chat - dark cream */
+
+		--green-primary: 150, 100%, 40%; /* Green for contrast */
+		--green-secondary: 150, 100%, 45%; /* Slightly lighter green */
+		--green-chat: 150, 100%, 20%; /* Darker green for chat background */
+
+		--orange-primary: 35, 100%, 50%; /* Bright orange for playful elements */
+		--orange-secondary: 35, 100%, 25%; /* Dark orange for secondary playful elements */
+		--gray-tertiary: 30, 100%, 25%; /* Darker dark cream */
+		/* CLASSES ADDED BY US */
+
+		--card: 30, 100%, 15%; /* Dark cream for card */
+		--card-foreground: 30, 100%, 95%; /* Light text for contrast */
+
+		--popover: 30, 100%, 15%; /* Dark cream for popover */
+		--popover-foreground: 30, 100%, 95%; /* Light text for contrast */
+
+		--primary: 30, 100%, 95%; /* Light text for primary elements */
+		--primary-foreground: 30, 100%, 10%; /* Dark background for primary elements */
+
+		--secondary: 30, 100%, 25%; /* Darker cream for secondary elements */
+		--secondary-foreground: 30, 100%, 95%; /* Light text for contrast */
+
+		--muted: 30, 100%, 25%; /* Muted darker cream */
+		--muted-foreground: 30, 100%, 50%; /* Mid-tone cream for muted elements */
+
+		--accent: 35, 100%, 25%; /* Dark orange for accent elements */
+		--accent-foreground: 30, 100%, 95%; /* Light text for accents */
+
+		--destructive: 0, 62.8%, 30.6%; /* Dark red for destructive elements */
+		--destructive-foreground: 30, 100%, 95%; /* Light text for destructive elements */
+
+		--border: 30, 100%, 25%; /* Border color in darker cream */
+		--input: 30, 100%, 25%; /* Input field color in darker cream */
+		--ring: 30, 100%, 10%; /* Dark color for focus ring */
+	}
+}
+
+@layer base {
+	* {
+		@apply border-border;
+	}
+	body {
+		@apply bg-background text-foreground;
+	}
+}
+
+/* WE ADDED => DARK MODE THIN SCROLLBAR */
+@layer components {
+	::-webkit-scrollbar {
+		width: 8px;
+	}
+	::-webkit-scrollbar-thumb {
+		background-color: hsl(var(--gray-primary));
+		border-radius: 4px;
+	}
+	::-webkit-scrollbar-track {
+		background-color: hsl(var(--container));
+	}
+}
