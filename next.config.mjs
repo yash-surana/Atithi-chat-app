@@ -6,6 +6,9 @@ const nextConfig = {
 			{ hostname: "oaidalleapiprodscus.blob.core.windows.net" },
 		],
 	},
+	images: {
+		domains: ['reliable-bloodhound-583.convex.cloud'],
+	  },
 };
 
 export default nextConfig;
