@@ -44,6 +44,27 @@ export const updateUser = internalMutation({
   }
 });
 
+export const updateRole = internalMutation({
+  args: { userId: v.id("users"), role: v.string() },
+  async handler(ctx, args) {
+    const user = await ctx.db.get(args.userId);
+
+    if (!user) {
+      throw new ConvexError("User not found");
+    }
+    else if (args.role==="" || args.role===null) {
+      throw new ConvexError("Role cannot be empty");
+    }
+
+    await ctx.db.patch(args.userId, {
+      role: args.role,
+      isonboarding: true, // Set isonboarding to true when role is updated
+    });
+
+    return await ctx.db.get(args.userId); // Return updated user
+  }
+});
+
 export const setUserOnline = internalMutation({
   args: { tokenIdentifier: v.string() },
   handler: async (ctx, args) => {
