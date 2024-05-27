@@ -1,16 +1,23 @@
-// pages/events/[id].tsx
-import { useRouter } from 'next/router';
+// app/events/[id]/page.tsx
+"use client";
+
+import { useParams } from 'next/navigation';
 import { useQuery } from 'convex/react';
-import { api } from '../../convex/_generated/api';
 import React from 'react';
+import { api } from '../../../../convex/_generated/api';
 
 const EventPage: React.FC = () => {
-  const router = useRouter();
-  const { id } = router.query;
-  const event = useQuery(api.events.getEventById, id ? { id: id as string } : "skip");
+  const params = useParams();
+  const { id } = params;
+
+  const event = useQuery(api.events.getEventById, id ? { id } : "skip");
 
   if (!event) {
     return <div>Loading...</div>;
+  }
+
+  if (!event) {
+    return <div>Event not found</div>;
   }
 
   return (

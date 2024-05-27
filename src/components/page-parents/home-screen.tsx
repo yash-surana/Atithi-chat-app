@@ -1,20 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { useMutation } from 'convex/react';
-import { api } from '../../../convex/_generated/api';
-import { useRouter } from 'next/navigation';
+import React, { useState, useEffect } from "react";
+import { useMutation } from "convex/react";
+import { api } from "../../../convex/_generated/api";
+import { useRouter } from "next/navigation";
 
 interface HomeScreenProps {
-  role: 'user' | 'vendor';
+  role: "user" | "vendor";
 }
-
+const initialFormData = {
+  name: "",
+  description: "",
+  startDate: "",
+  endDate: "",
+};
 const HomeScreen: React.FC<HomeScreenProps> = ({ role }) => {
   const [showPopup, setShowPopup] = useState(false);
-  const [formData, setFormData] = useState({
-    name: '',
-    description: '',
-    startDate: '',
-    endDate: ''
-  });
+  const [formData, setFormData] = useState(initialFormData);
   const createEvent = useMutation(api.events.createEvent);
   const [loggedUser, setLoggedUser] = useState(null);
   const router = useRouter();
@@ -24,15 +24,17 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ role }) => {
     setLoggedUser(user);
   }, []);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
-    setFormData(prevState => ({ ...prevState, [name]: value }));
+    setFormData((prevState) => ({ ...prevState, [name]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!loggedUser) {
-      console.error('User not logged in');
+      console.error("User not logged in");
       return;
     }
 
@@ -41,32 +43,34 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ role }) => {
         name: formData.name,
         description: formData.description,
         startDate: new Date(formData.startDate).toISOString(), // Ensure ISO string format
-        endDate: new Date(formData.endDate).toISOString(),     // Ensure ISO string format
+        endDate: new Date(formData.endDate).toISOString(), // Ensure ISO string format
         host: loggedUser?._id, // Ensure this is available
       });
 
       console.log(newEventId, "New Event ID");
-
+      setFormData(initialFormData);
       // Ensure router is ready before redirecting
-      if (router.isReady) {
-        router.push(`/events/${newEventId}`);
-      }
+
+      router?.push(`/events/${newEventId}`);
+
       setShowPopup(false);
     } catch (error) {
-      console.error('Failed to create event:', error);
+      console.error("Failed to create event:", error);
     }
   };
 
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-[#f9f5f2] text-black p-6 text-center">
       <h3 className="text-xl font-semibold mb-6">Home</h3>
-      <img 
-        src="/path/to/your/image.png" 
-        alt="No events illustration" 
+      <img
+        src="/path/to/your/image.png"
+        alt="No events illustration"
         className="w-36 h-36 mb-6"
       />
-      <p className="mb-6">No events here. Add or join an event to get started.</p>
-      {role === 'user' && (
+      <p className="mb-6">
+        No events here. Add or join an event to get started.
+      </p>
+      {role === "user" && (
         <div className="w-full max-w-xs">
           <button
             className="bg-[#b00020] text-black font-bold py-2 px-4 rounded w-full mb-4 hover:bg-[#9b001a]"
@@ -107,7 +111,9 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ role }) => {
                 />
               </div>
               <div className="mb-4">
-                <label className="block text-left mb-1">Start Date & Time</label>
+                <label className="block text-left mb-1">
+                  Start Date & Time
+                </label>
                 <input
                   type="datetime-local"
                   name="startDate"
