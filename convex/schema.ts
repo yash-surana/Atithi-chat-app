@@ -8,6 +8,8 @@ export default defineSchema({
 		image: v.string(),
 		tokenIdentifier: v.string(),
 		isOnline: v.boolean(),
+		role : v.string(),
+		isonboarding: v.boolean(),
 	}).index("by_tokenIdentifier", ["tokenIdentifier"]),
 
 	conversations: defineTable({
@@ -24,4 +26,13 @@ export default defineSchema({
 		content: v.string(),
 		messageType: v.union(v.literal("text"), v.literal("image"), v.literal("video")),
 	}).index("by_conversation", ["conversation"]),
+
+	events: defineTable({
+		name: v.string(),
+		description: v.string(),
+		startDate: v.string(), // Use string to represent date-time
+		endDate: v.string(),   // Use string to represent date-time
+		host: v.id("users"),
+	  }),
+	
 });
