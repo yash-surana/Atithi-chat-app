@@ -58,7 +58,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ role }) => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-[#f9f5f2] p-6 text-center">
+    <div className="flex flex-col items-center justify-center h-screen bg-[#f9f5f2] text-black p-6 text-center">
       <h3 className="text-xl font-semibold mb-6">Home</h3>
       <img 
         src="/path/to/your/image.png" 

@@ -1,6 +1,6 @@
 // src/server/users.ts
 import { ConvexError, v } from "convex/values";
-import { internalMutation, query } from "./_generated/server";
+import { internalMutation, mutation, query } from "./_generated/server";
 import { User } from ".././src/types"; // Import the User type
 
 export const createUser = internalMutation({
@@ -44,7 +44,7 @@ export const updateUser = internalMutation({
   }
 });
 
-export const updateRole = internalMutation({
+export const updateRole = mutation({
   args: { userId: v.id("users"), role: v.string() },
   async handler(ctx, args) {
     const user = await ctx.db.get(args.userId);
