@@ -1,8 +1,5 @@
-
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
-
-
 
 export const createEvent = mutation({
   args: {
@@ -19,6 +16,8 @@ export const createEvent = mutation({
       startDate: args.startDate,
       endDate: args.endDate,
       host: args.host,
+      vendors: [], // Default to an empty array
+      guests: []  // Default to an empty array
     });
     return eventId;
   }

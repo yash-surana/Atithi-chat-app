@@ -1,21 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { useMutation } from "convex/react";
-import { api } from "../../../convex/_generated/api";
 import { useRouter } from "next/navigation";
+import AddEvent from "../home/add-event";
+import toast from "react-hot-toast";
 
 interface HomeScreenProps {
   role: "user" | "vendor";
 }
-const initialFormData = {
-  name: "",
-  description: "",
-  startDate: "",
-  endDate: "",
-};
+
 const HomeScreen: React.FC<HomeScreenProps> = ({ role }) => {
   const [showPopup, setShowPopup] = useState(false);
-  const [formData, setFormData] = useState(initialFormData);
-  const createEvent = useMutation(api.events.createEvent);
   const [loggedUser, setLoggedUser] = useState(null);
   const router = useRouter();
 
@@ -24,43 +17,12 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ role }) => {
     setLoggedUser(user);
   }, []);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prevState) => ({ ...prevState, [name]: value }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!loggedUser) {
-      console.error("User not logged in");
-      return;
-    }
-
-    try {
-      const newEventId = await createEvent({
-        name: formData.name,
-        description: formData.description,
-        startDate: new Date(formData.startDate).toISOString(), // Ensure ISO string format
-        endDate: new Date(formData.endDate).toISOString(), // Ensure ISO string format
-        host: loggedUser?._id, // Ensure this is available
-      });
-
-      console.log(newEventId, "New Event ID");
-      setFormData(initialFormData);
-      // Ensure router is ready before redirecting
-
-      router?.push(`/events/${newEventId}`);
-
-      setShowPopup(false);
-    } catch (error) {
-      console.error("Failed to create event:", error);
-    }
+  const handleClosePopup = () => {
+    setShowPopup(false);
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-[#f9f5f2] text-black p-6 text-center">
+    <div className="flex flex-col items-center justify-center h-screen bg-[#f9f5f2] text-black p-6 text-center relative">
       <h3 className="text-xl font-semibold mb-6">Home</h3>
       <img
         src="/path/to/your/image.png"
@@ -78,80 +40,14 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ role }) => {
           >
             Add Event
           </button>
-          <button className="bg-white text-black font-bold py-2 px-4 rounded w-full border-2 border-[#b00020] hover:bg-[#f9f5f2]">
+          <button className="bg-white text-black font-bold py-2 px-4 rounded w-full border-2 border-[#b00020] hover:bg-[#f9f5f2]" onClick={()=> toast.error("Guest access coming soon!")}>
             Join Event
           </button>
         </div>
       )}
 
-      {showPopup && (
-        <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center text-black">
-          <div className="bg-white p-6 rounded shadow-lg w-full max-w-md">
-            <h2 className="text-2xl mb-4">Create Event</h2>
-            <form onSubmit={handleSubmit}>
-              <div className="mb-4">
-                <label className="block text-left mb-1">Event Name</label>
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  className="w-full border rounded p-2  bg-gray-100"
-                  required
-                />
-              </div>
-              <div className="mb-4">
-                <label className="block text-left mb-1">Description</label>
-                <textarea
-                  name="description"
-                  value={formData.description}
-                  onChange={handleChange}
-                  className="w-full border rounded p-2 bg-gray-100"
-                  required
-                />
-              </div>
-              <div className="mb-4">
-                <label className="block text-left mb-1">
-                  Start Date & Time
-                </label>
-                <input
-                  type="datetime-local"
-                  name="startDate"
-                  value={formData.startDate}
-                  onChange={handleChange}
-                  className="w-full border rounded p-2 bg-gray-100"
-                  required
-                />
-              </div>
-              <div className="mb-4">
-                <label className="block text-left mb-1">End Date & Time</label>
-                <input
-                  type="datetime-local"
-                  name="endDate"
-                  value={formData.endDate}
-                  onChange={handleChange}
-                  className="w-full border rounded p-2 bg-gray-100"
-                  required
-                />
-              </div>
-              <div className="flex justify-end">
-                <button
-                  type="button"
-                  className="bg-gray-500 text-white font-bold py-2 px-4 rounded mr-2 hover:bg-gray-600"
-                  onClick={() => setShowPopup(false)}
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="bg-[#b00020] text-white font-bold py-2 px-4 rounded hover:bg-[#9b001a]"
-                >
-                  Create
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
+      {showPopup && loggedUser && (
+        <AddEvent onClose={handleClosePopup} loggedUser={loggedUser} />
       )}
     </div>
   );
