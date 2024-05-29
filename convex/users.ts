@@ -163,3 +163,14 @@ export const getGroupMembers = query({
     return groupMembers;
   }
 });
+export const getHostedEventsByUserId = query({
+  args: { userId: v.id("users") },
+  handler: async (ctx, args) => {
+    const events = await ctx.db
+      .query("events")
+      .filter(q => q.eq(q.field("host"), args.userId))
+      .collect();
+    console.log(events);
+    return events;
+  }
+});
