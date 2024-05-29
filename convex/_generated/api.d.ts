@@ -17,10 +17,12 @@ import type {
 import type * as clerk from "../clerk.js";
 import type * as conversations from "../conversations.js";
 import type * as events from "../events.js";
+import type * as guests from "../guests.js";
 import type * as http from "../http.js";
 import type * as messages from "../messages.js";
 import type * as openai from "../openai.js";
 import type * as users from "../users.js";
+import type * as vendor from "../vendor.js";
 
 /**
  * A utility for referencing Convex functions in your app's API.
@@ -34,10 +36,12 @@ declare const fullApi: ApiFromModules<{
   clerk: typeof clerk;
   conversations: typeof conversations;
   events: typeof events;
+  guests: typeof guests;
   http: typeof http;
   messages: typeof messages;
   openai: typeof openai;
   users: typeof users;
+  vendor: typeof vendor;
 }>;
 export declare const api: FilterApi<
   typeof fullApi,

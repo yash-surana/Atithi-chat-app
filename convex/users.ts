@@ -1,7 +1,8 @@
 // src/server/users.ts
 import { ConvexError, v } from "convex/values";
-import { internalMutation, query } from "./_generated/server";
-import { User } from ".././src/types"; // Import the User type
+import { internalMutation, mutation, query } from "./_generated/server";
+import { User } from "../src/types"; // Import the User type
+
 
 export const createUser = internalMutation({
   args: {
@@ -13,6 +14,11 @@ export const createUser = internalMutation({
     isonboarding: v.boolean()
   },
   handler: async (ctx, args) => {
+    // Validate the role
+    if (args.role !== "user" && args.role !== "vendor") {
+      throw new ConvexError("Invalid role. Must be 'user' or 'vendor'.");
+    }
+
     const newUser: User = {
       tokenIdentifier: args.tokenIdentifier,
       email: args.email,
@@ -20,8 +26,10 @@ export const createUser = internalMutation({
       image: args.image,
       isOnline: true,
       role: args.role,
-      isonboarding: false // Or use args.isonboarding if it should come from args
+      isonboarding: args.isonboarding,
+      events: [] // Default to an empty array
     };
+
     await ctx.db.insert("users", newUser);
   }
 });
@@ -44,7 +52,7 @@ export const updateUser = internalMutation({
   }
 });
 
-export const updateRole = internalMutation({
+export const updateRole = mutation({
   args: { userId: v.id("users"), role: v.string() },
   async handler(ctx, args) {
     const user = await ctx.db.get(args.userId);
@@ -52,8 +60,9 @@ export const updateRole = internalMutation({
     if (!user) {
       throw new ConvexError("User not found");
     }
-    else if (args.role==="" || args.role===null) {
-      throw new ConvexError("Role cannot be empty");
+
+    if (args.role !== "user" && args.role !== "vendor") {
+      throw new ConvexError("Invalid role. Must be 'user' or 'vendor'.");
     }
 
     await ctx.db.patch(args.userId, {
