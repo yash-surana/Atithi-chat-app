@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useRouter } fruseMutationvigation";
+import { useRouter } from "next/navigation";
 import AddEvent from "../home/add-event";
 import toast from "react-hot-toast";
 
