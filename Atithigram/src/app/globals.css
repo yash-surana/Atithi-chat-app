@@ -1,0 +1,239 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Jaini&display=swap');
+
+@layer base {
+  :root {
+    --background: #EDE2D5;
+    --foreground: #393939;
+
+    --muted: #EBC4A0;
+    --muted-foreground: #393939;
+
+    --popover: #EDE2D5;
+    --popover-foreground: #393939;
+
+    --card: #EDE2D5;
+    --card-foreground: #393939;
+
+    --border: #EBC4A0;
+    --input: #EDE2D5;
+
+    --primary: #EBC4A0;
+    --primary-foreground: #ffffff;
+
+    --secondary: #393939;
+    --secondary-foreground: #ffffff;
+
+    --accent: #393939;
+    --accent-foreground: #ffffff;
+
+    --destructive: #f03045;
+    --destructive-foreground: #ffffff;
+
+    --ring: #EBC4A0;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: #393939;
+    --foreground: #ffffff;
+
+    --muted: #2d2d2d;
+    --muted-foreground: #ffffff;
+
+    --popover: #393939;
+    --popover-foreground: #ffffff;
+
+    --card: #393939;
+    --card-foreground: #ffffff;
+
+    --border: #393939;
+    --input: #393939;
+
+    --primary: #EBC4A0;
+    --primary-foreground: #ffffff;
+
+    --secondary: #2d2d2d;
+    --secondary-foreground: #ffffff;
+
+    --accent: #2d2d2d;
+    --accent-foreground: #ffffff;
+
+    --destructive: #f03045;
+    --destructive-foreground: #ffffff;
+
+    --ring: #2d2d2d;
+  }
+}
+
+body {
+  background: var(--background);
+  height: 100%;
+  width: 100%;
+  min-height: 100vh;
+  color: var(--foreground);
+  overflow: scroll;
+}
+
+/* Your existing custom styles */
+
+/* Apply border color and background/text colors from the custom properties */
+.signin_animate h2{
+  font-family: "Jaini" !important;
+  font-weight: bold;
+  font-style: normal;
+  font-size: xx-large;
+  margin-bottom: 10%;
+}
+
+.slide_link_active {
+  border-color: var(--secondary);
+  color: var(--secondary);
+  font-weight: 500;
+}
+
+.slide_link_active svg {
+  color: var(--secondary);
+}
+
+.popupbox::before {
+  border-bottom-color: var(--muted);
+  border-color: var(--border);
+  left: 42px;
+  margin-left: -9px;
+}
+
+.popupbox::before,
+.popupbox::after {
+  position: absolute;
+  pointer-events: none;
+  border: solid transparent;
+  bottom: 100%;
+  content: "";
+  height: 0;
+  width: 0;
+}
+
+.popupbox::after {
+  border-bottom-color: #fff;
+  border-color: var(--border);
+  left: 42px;
+  margin-left: -8px;
+}
+
+/* Custom styles for new user page */
+.w-calc-100-min-24 {
+  width: calc(100% - 24px);
+}
+
+.h-calc-100-min-113 {
+  min-height: calc(100vh - 113px);
+}
+
+.home_width {
+  width: calc(100% - 280px);
+}
+
+
+
+.loads {
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+  animation-name: placeload;
+  animation-timing-function: linear;
+  background: linear-gradient(to right, #eeeeee 8%, #dddddd 18%, #eeeeee 33%);
+  background-size: 1200px 104px;
+  position: relative;
+}
+
+.loader {
+  width: 48px;
+  height: 48px;
+  position: relative;
+}
+
+.loader::before,
+.loader::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 48em;
+  height: 48em;
+  background-image: radial-gradient(circle 10px, var(--accent) 100%, transparent 0),
+    radial-gradient(circle 10px, var(--accent) 100%, transparent 0),
+    radial-gradient(circle 10px, var(--accent) 100%, transparent 0),
+    radial-gradient(circle 10px, var(--accent) 100%, transparent 0),
+    radial-gradient(circle 10px, var(--accent) 100%, transparent 0),
+    radial-gradient(circle 10px, var(--accent) 100%, transparent 0),
+    radial-gradient(circle 10px, var(--accent) 100%, transparent 0),
+    radial-gradient(circle 10px, var(--accent) 100%, transparent 0);
+  background-position: 0em -18em, 0em 18em, 18em 0em, -18em 0em, 13em -13em, -13em -13em, 13em 13em, -13em 13em;
+  background-repeat: no-repeat;
+  font-size: 0.5px;
+  border-radius: 50%;
+  animation: blast 1s ease-in infinite;
+}
+
+.loader::after {
+  font-size: 1px;
+  background: var(--accent);
+  animation: bounce 1s ease-in infinite;
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    font-size: 0.75px;
+  }
+  50% {
+    font-size: 1.5px;
+  }
+}
+
+@keyframes blast {
+  0%,
+  40% {
+    font-size: 0.5px;
+  }
+  70% {
+    opacity: 1;
+    font-size: 4px;
+  }
+  100% {
+    font-size: 6px;
+    opacity: 0;
+  }
+}
+
+@keyframes placeload {
+  0% {
+    background-position: -468px 0;
+  }
+  100% {
+    background-position: 468px 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .home_width {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .myslidebar {
+    transform: translate(-100%);
+  }
+}
+
+/* Apply border color from the custom properties */
+@layer base {
+  * {
+    @apply border-border;
+  }
+}
