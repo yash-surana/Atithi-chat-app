@@ -14,11 +14,11 @@ const EventPage: React.FC = () => {
   const event = useQuery(api.events.getEventById, id ? { id } : "skip");
 
   if (!event) {
-    return <div>Loading...</div>;
+    return <div className='px-6 py-10'>Loading...</div>;
   }
 
   if (!event) {
-    return <div>Event not found</div>;
+    return <div className='px-6 py-10'>Event not found</div>;
   }
 
   return (

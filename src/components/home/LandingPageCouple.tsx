@@ -94,7 +94,7 @@ const LandingPageCouple = () => {
           <div className="pos-abs widgets-2136210" id="id-2136210">
             <div className="pos-abs widget1-2136211" id="id-2136211">
               <div className="pos-abs datetimeframe-2136212" id="id-2136212">
-                <div className="pos-abs date-2136213" id="id-2136213">
+                <div className="pos-abs date-2136213 h-full" id="id-2136213">
                   <div className="pos-abs calendardots-2136215" id="id-2136215">
                     <div
                       className="pos-abs vector-I2136215_889921046"
@@ -113,7 +113,7 @@ const LandingPageCouple = () => {
                 <div className="pos-abs daystime-2136216" id="id-2136216">
                   <div className="pos-abs dayhighlight-2136217" id="id-2136217">
                     <div className="pos-abs c-12-2136218" id="id-2136218">
-                      <span className="c-12-2136218-0 ">{daysDifference}</span>
+                      <span className="c-12-2136218-0 text-lg">{daysDifference}</span>
                     </div>
                   </div>
                   <div className="pos-abs days-until-2136219" id="id-2136219">
@@ -443,7 +443,7 @@ const LandingPageCouple = () => {
               </div>
             </div>
           </div>
-          <div className="pos-abs guestscard-2136319" id="id-2136319">
+          <div className="pos-abs guestscard-2136319 p-6 pb-2" id="id-2136319">
             <div className="pos-abs cardheader-2136320" id="id-2136320">
               <div className="pos-abs heading-2136321" id="id-2136321">
                 <div
@@ -475,7 +475,7 @@ const LandingPageCouple = () => {
               </div>
             </div>            
              <div className="piediv"><PieChart data={data} labels={labels} /></div>
-             <button  style={{marginLeft:"3%"}}className="todo-add-button">View Guest</button>
+             <button  className="todo-add-button mt-4">View Guest</button>
           </div>
         </section>
    

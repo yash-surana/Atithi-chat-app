@@ -5092,12 +5092,14 @@ body {
 }
 
 .todo-add-button {
-  background-color: #a52a2a;
+  background-color: #861E27;
   color: white;
   border: none;
-  padding: 5px 10px;
-  border-radius: 5px;
+  padding: 8px 32px;
+  border-radius: 8px;
   cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
 }
 
 .completed {
