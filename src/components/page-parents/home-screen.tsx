@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import dynamic from 'next/dynamic';
-import { useRouter } from "next/router";
 import AddEvent from "../home/add-event";
 import toast from "react-hot-toast";
 import { useQuery } from "convex/react";
