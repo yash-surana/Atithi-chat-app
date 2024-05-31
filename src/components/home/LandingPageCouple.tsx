@@ -1,52 +1,77 @@
-"use client"
+"use client";
 import React, { useEffect, useState } from "react";
 import Sidebar from "./Sidebar";
-import Image from 'next/image';
+import Image from "next/image";
 import { api } from "../../../convex/_generated/api";
 
 import PieChart from "./Piechart";
 import "./style.css";
 import { useQuery } from "convex/react";
 import ToDoList from "./ToDoList";
-import welcomeimg from '../../../public/welcomeimg.png';
+import welcomeimg from "../../../public/welcomeimg.png";
 import { useParams } from "next/navigation";
 
 const LandingPageCouple = () => {
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-    const openSidebar = () => setIsSidebarOpen(true);
-    const closeSidebar = () => setIsSidebarOpen(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [iframeUrl, setIframeUrl] = useState("");
 
-    const me = useQuery(api.users.getMe);
-    const params = useParams();
-    const { id } = params;
-  
-    const event = useQuery(api.events.getEventById, id ? { id } : "skip");
-    const eventstartdate = event?.startDate;
-    const eventenddate = event?.endDate;
-    const formattedDate = new Date(event?.startDate).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-  });
-  const data = [30,13,2];
-  const labels = ['Confirmed', 'Pending', 'Declined'];
-  
-  console.log(formattedDate); 
-    // Check if event start date is defined before performing calculations
-    let daysDifference: number | undefined;
-    if (eventstartdate) {
-        const startDate = new Date(eventstartdate);
-        const today = new Date();
-        const timeDifference = startDate.getTime() - today.getTime();
-        daysDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+  const openSidebar = () => setIsSidebarOpen(true);
+  const closeSidebar = () => setIsSidebarOpen(false);
+
+  const openIframe = (url) => {
+    setIframeUrl(url);
+    const iframeContainer = document.getElementById('iframe-container');
+    if (iframeContainer) {
+      iframeContainer.style.display = 'block';
     }
+  };
+
+  const closeIframe = () => {
+    setIframeUrl("");
+    const iframeContainer = document.getElementById('iframe-container');
+    if (iframeContainer) {
+      iframeContainer.style.display = 'none';
+    }
+  };
+
+  const me = useQuery(api.users.getMe);
+  const params = useParams();
+  const { id } = params;
+
+  const event = useQuery(api.events.getEventById, id ? { id } : "skip");
+  const eventstartdate = event?.startDate;
+  const eventenddate = event?.endDate;
+  const formattedDate = new Date(event?.startDate).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+  const data = [30, 13, 2];
+  const labels = ["Confirmed", "Pending", "Declined"];
+
+  console.log(formattedDate);
+  // Check if event start date is defined before performing calculations
+  let daysDifference: number | undefined;
+  if (eventstartdate) {
+    const startDate = new Date(eventstartdate);
+    const today = new Date();
+    const timeDifference = startDate.getTime() - today.getTime();
+    daysDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+  }
   return (
-    <div className="parent-div ">
+    <div className="parent-div">
       <div className="pos-abs dashboardv2-2136203" id="id-2136203">
-      <Sidebar isOpen={isSidebarOpen} closeSidebar={closeSidebar} />
-        {/* Header1 */}
-        <section className="pos-abs header-2136205" id="id-2136205">         
-          <div className="button-container pos-abs" id="id-2136206"onClick={openSidebar}>
+        {/*sidebar code*/}
+        <Sidebar isOpen={isSidebarOpen} closeSidebar={closeSidebar} />
+        {/*header starts*/}
+        <section className="header-2136205" id="id-2136205">
+          {/*menu bar*/}
+          <div
+            className="button-container pos-abs"
+            id="id-2136206"
+            onClick={openSidebar}
+          >
+            {" "}
             <div className="pos-abs menu-83146">
               <div className="pos-abs vector-10-83148">
                 <div className="nodeBg-83148 pos-abs pos-init fill-parent image-div bg-contain bg-no-repeat "></div>
@@ -59,497 +84,348 @@ const LandingPageCouple = () => {
               </div>
             </div>
           </div>
-          <div className="pos-abs dashboarddrop-2136207" id="id-2136207">
-            <div className="pos-abs channels1-2136613" id="id-2136613" onClick={() => alert("opeh")}>
-              <span className="channels1-2136613-0 ">{"Channels"}</span>
-            </div>
-            <div className="pos-abs home-2136208" id="id-2136208" >
-              <span className="home-2136208-0 ">{"Home"}</span>
-            </div>
-          </div>
+          {/*menubar code ends*/}
+          <span className="head">Home</span>
         </section>
-
-        
+        {/*header ends*/}
+        <div id="iframe-container" style={{ display: 'none', position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0, 0, 0, 0.8)', zIndex: 1000 }}>
+          <span id="close-iframe" onClick={closeIframe} style={{ position: 'absolute', top: '20px', right: '20px', fontSize: '24px', color: 'white', cursor: 'pointer' }}>×</span>
+          <iframe id="iframe" src={iframeUrl} style={{ position: 'absolute', top: '50%', left: '50%', width: '80%', height: '80%', transform: 'translate(-50%, -50%)', border: 'none' }}></iframe>
+        </div>
         {/* dashboard-widgets1 */}
-        <section className="pos-abs dashboardwidget-2136209" id="id-2136209">
-          <div className="pos-abs welcomeframe-2136367" id="id-2136367">
-            <div className="pos-abs img-2136368" id="id-2136368">
-            <Image src={welcomeimg} alt="Create Event" />
-            </div>
-            <div className="pos-abs textframe-2136369" id="id-2136369">
+        <section className="dashboardwidget-2136209" id="id-2136209">
+          <div className="welcomeframe-2136367" id="id-2136367">
+            <div className="textframe-2136369" id="id-2136369">
               <div className="pos-abs welcome-jiya-2136370" id="id-2136370">
-                <span className="welcome-jiya-2136370-0 ">
-                  Welcome,<br/> {me?.name}
+                <span className="welc">
+                  Welcome,&nbsp;{me?.name} <br />
+                </span>
+                <span className="tuy">
+                  Set-up your profile for more personalized experience.
                 </span>
               </div>
-              <div className="pos-abs setup-your-prof-2136371" id="id-2136371">
-                <span className="setup-your-prof-2136371-0 ">
-                  Set-up your profile for more 
-                   personalized experience.
-                </span>
-              </div>
+            </div>
+            <div id="id-2136368">
+              <Image src={welcomeimg} alt="Create Event" className="imgwe" />
             </div>
           </div>
           {/*event time and budget widget*/}
-          <div className="pos-abs widgets-2136210" id="id-2136210">
-            <div className="pos-abs widget1-2136211" id="id-2136211">
-              <div className="pos-abs datetimeframe-2136212" id="id-2136212">
-                <div className="pos-abs date-2136213" id="id-2136213">
-                  <div className="pos-abs calendardots-2136215" id="id-2136215">
-                    <div
-                      className="pos-abs vector-I2136215_889921046"
-                      id="id-I2136215_889921046"
-                    >
-                      <div
-                        className="nodeBg-I2136215_889921046 pos-abs pos-init fill-parent image-div bg-contain bg-no-repeat "
-                        id="id-bg-I2136215_889921046"
-                      ></div>
-                    </div>
-                  </div>
-                  <div className="pos-abs c-060224-2136214" id="id-2136214">
-                    <span className="c-060224-2136214-0 ">{formattedDate}</span>
-                  </div>
-                </div>
-                <div className="pos-abs daystime-2136216" id="id-2136216">
-                  <div className="pos-abs dayhighlight-2136217" id="id-2136217">
-                    <div className="pos-abs c-12-2136218" id="id-2136218">
-                      <span className="c-12-2136218-0 ">{daysDifference}</span>
-                    </div>
-                  </div>
-                  <div className="pos-abs days-until-2136219" id="id-2136219">
-                    <span className="days-until-2136219-0 ">
-                      {"Days Until"}
-                    </span>
-                  </div>
-                </div>
-                <div className="pos-abs veerekiwedding-2136220" id="id-2136220">
-                  <span className="veerekiwedding-2136220-0 ">
-                    {"#"+event?.name}
-                  </span>
+          <div className="widgets-2136210" id="id-2136210">
+            <div className="widget1-2136211" id="id-2136211">
+              <div className="upbox">
+                <div className="date">{formattedDate}</div>
+                <div className="calender">
+                  <svg
+                    width="18"
+                    height="20"
+                    viewBox="0 0 18 20"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M16.5 2H14.25V1.25C14.25 1.05109 14.171 0.860322 14.0303 0.71967C13.8897 0.579018 13.6989 0.5 13.5 0.5C13.3011 0.5 13.1103 0.579018 12.9697 0.71967C12.829 0.860322 12.75 1.05109 12.75 1.25V2H5.25V1.25C5.25 1.05109 5.17098 0.860322 5.03033 0.71967C4.88968 0.579018 4.69891 0.5 4.5 0.5C4.30109 0.5 4.11032 0.579018 3.96967 0.71967C3.82902 0.860322 3.75 1.05109 3.75 1.25V2H1.5C1.10218 2 0.720644 2.15804 0.43934 2.43934C0.158035 2.72064 0 3.10218 0 3.5V18.5C0 18.8978 0.158035 19.2794 0.43934 19.5607C0.720644 19.842 1.10218 20 1.5 20H16.5C16.8978 20 17.2794 19.842 17.5607 19.5607C17.842 19.2794 18 18.8978 18 18.5V3.5C18 3.10218 17.842 2.72064 17.5607 2.43934C17.2794 2.15804 16.8978 2 16.5 2ZM3.75 3.5V4.25C3.75 4.44891 3.82902 4.63968 3.96967 4.78033C4.11032 4.92098 4.30109 5 4.5 5C4.69891 5 4.88968 4.92098 5.03033 4.78033C5.17098 4.63968 5.25 4.44891 5.25 4.25V3.5H12.75V4.25C12.75 4.44891 12.829 4.63968 12.9697 4.78033C13.1103 4.92098 13.3011 5 13.5 5C13.6989 5 13.8897 4.92098 14.0303 4.78033C14.171 4.63968 14.25 4.44891 14.25 4.25V3.5H16.5V6.5H1.5V3.5H3.75ZM16.5 18.5H1.5V8H16.5V18.5ZM10.125 11.375C10.125 11.5975 10.059 11.815 9.9354 12C9.81179 12.185 9.63609 12.3292 9.43052 12.4144C9.22495 12.4995 8.99875 12.5218 8.78052 12.4784C8.56229 12.435 8.36184 12.3278 8.2045 12.1705C8.04717 12.0132 7.94002 11.8127 7.89662 11.5945C7.85321 11.3762 7.87549 11.15 7.96064 10.9445C8.04578 10.7389 8.18998 10.5632 8.37498 10.4396C8.55999 10.316 8.7775 10.25 9 10.25C9.29837 10.25 9.58452 10.3685 9.79549 10.5795C10.0065 10.7905 10.125 11.0766 10.125 11.375ZM14.25 11.375C14.25 11.5975 14.184 11.815 14.0604 12C13.9368 12.185 13.7611 12.3292 13.5555 12.4144C13.35 12.4995 13.1238 12.5218 12.9055 12.4784C12.6873 12.435 12.4868 12.3278 12.3295 12.1705C12.1722 12.0132 12.065 11.8127 12.0216 11.5945C11.9782 11.3762 12.0005 11.15 12.0856 10.9445C12.1708 10.7389 12.315 10.5632 12.5 10.4396C12.685 10.316 12.9025 10.25 13.125 10.25C13.4234 10.25 13.7095 10.3685 13.9205 10.5795C14.1315 10.7905 14.25 11.0766 14.25 11.375ZM6 15.125C6 15.3475 5.93402 15.565 5.8104 15.75C5.68679 15.935 5.51109 16.0792 5.30552 16.1644C5.09995 16.2495 4.87375 16.2718 4.65552 16.2284C4.43729 16.185 4.23684 16.0778 4.0795 15.9205C3.92217 15.7632 3.81502 15.5627 3.77162 15.3445C3.72821 15.1262 3.75049 14.9 3.83564 14.6945C3.92078 14.4889 4.06498 14.3132 4.24998 14.1896C4.43499 14.066 4.6525 14 4.875 14C5.17337 14 5.45952 14.1185 5.6705 14.3295C5.88147 14.5405 6 14.8266 6 15.125ZM10.125 15.125C10.125 15.3475 10.059 15.565 9.9354 15.75C9.81179 15.935 9.63609 16.0792 9.43052 16.1644C9.22495 16.2495 8.99875 16.2718 8.78052 16.2284C8.56229 16.185 8.36184 16.0778 8.2045 15.9205C8.04717 15.7632 7.94002 15.5627 7.89662 15.3445C7.85321 15.1262 7.87549 14.9 7.96064 14.6945C8.04578 14.4889 8.18998 14.3132 8.37498 14.1896C8.55999 14.066 8.7775 14 9 14C9.29837 14 9.58452 14.1185 9.79549 14.3295C10.0065 14.5405 10.125 14.8266 10.125 15.125ZM14.25 15.125C14.25 15.3475 14.184 15.565 14.0604 15.75C13.9368 15.935 13.7611 16.0792 13.5555 16.1644C13.35 16.2495 13.1238 16.2718 12.9055 16.2284C12.6873 16.185 12.4868 16.0778 12.3295 15.9205C12.1722 15.7632 12.065 15.5627 12.0216 15.3445C11.9782 15.1262 12.0005 14.9 12.0856 14.6945C12.1708 14.4889 12.315 14.3132 12.5 14.1896C12.685 14.066 12.9025 14 13.125 14C13.4234 14 13.7095 14.1185 13.9205 14.3295C14.1315 14.5405 14.25 14.8266 14.25 15.125Z"
+                      fill="#861E27"
+                    />
+                  </svg>
                 </div>
               </div>
+              <div className="daysleft">
+                <div className="daysl">{daysDifference}</div>
+                <div className="daycont">Days Left</div>
+              </div>
+              <div className="wedding">{"#" + event?.name}</div>
             </div>
-            <div className="pos-abs widget2-2136221" id="id-2136221">
-              <div className="pos-abs budgetframe-2136222" id="id-2136222">
-                <div className="pos-abs budgeticon-2136223" id="id-2136223">
-                  <div
-                    className="calculator-2136225-container pos-abs"
-                    id="id-2136225"
+            <div className="widget2-2136221" id="id-2136221">
+              <div className="upbox">
+                <div className="budhead">Budget Updates</div>
+                <div className="calender">
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
                   >
-                    <div className="pos-abs formatoutline-w-1114638">
-                      <div className="pos-abs vector-1114639">
-                        <div className="nodeBg-1114639 pos-abs pos-init fill-parent image-div bg-contain bg-no-repeat "></div>
-                      </div>
-                    </div>
-                  </div>
-                  <div
-                    className="pos-abs budget-updates-2136224"
-                    id="id-2136224"
-                  >
-                    <span className="budget-updates-2136224-0 ">
-                      {"Budget Updates"}
-                    </span>
-                  </div>
-                </div>
-                <div className="pos-abs amount-2136226" id="id-2136226">
-                  <div className="pos-abs percentage-2136227" id="id-2136227">
-                    <div className="pos-abs c-34-2136228" id="id-2136228">
-                      <span className="c-34-2136228-0 ">{"34%"}</span>
-                    </div>
-                    <div className="pos-abs spent-2136229" id="id-2136229">
-                      <span className="spent-2136229-0 ">{"Spent"}</span>
-                    </div>
-                  </div>
-                  <div
-                    className="pos-abs c-12244-of-36194--2136230"
-                    id="id-2136230"
-                  >
-                    <span className="c-12244-of-36194--2136230-0 ">
-                      {"(12,244 of 36,194 USD)"}
-                    </span>
-                  </div>
-                </div>
-                <div
-                  className="pos-abs last-transactio-2136231"
-                  id="id-2136231"
-                >
-                  <span className="last-transactio-2136231-0 ">
-                    {"Last Transaction:"}
-                  </span>
-                  <span className="last-transactio-2136231-1 "> </span>
-                  <span className="last-transactio-2136231-2 ">
-                    {"05/10/24"}
-                  </span>
+                    <path
+                      d="M7.5 11.25H16.5C16.6989 11.25 16.8897 11.171 17.0303 11.0303C17.171 10.8897 17.25 10.6989 17.25 10.5V6C17.25 5.80109 17.171 5.61032 17.0303 5.46967C16.8897 5.32902 16.6989 5.25 16.5 5.25H7.5C7.30109 5.25 7.11032 5.32902 6.96967 5.46967C6.82902 5.61032 6.75 5.80109 6.75 6V10.5C6.75 10.6989 6.82902 10.8897 6.96967 11.0303C7.11032 11.171 7.30109 11.25 7.5 11.25ZM8.25 6.75H15.75V9.75H8.25V6.75ZM18.75 2.25H5.25C4.85218 2.25 4.47064 2.40804 4.18934 2.68934C3.90804 2.97064 3.75 3.35218 3.75 3.75V20.25C3.75 20.6478 3.90804 21.0294 4.18934 21.3107C4.47064 21.592 4.85218 21.75 5.25 21.75H18.75C19.1478 21.75 19.5294 21.592 19.8107 21.3107C20.092 21.0294 20.25 20.6478 20.25 20.25V3.75C20.25 3.35218 20.092 2.97064 19.8107 2.68934C19.5294 2.40804 19.1478 2.25 18.75 2.25ZM18.75 20.25H5.25V3.75H18.75V20.25ZM9.375 13.875C9.375 14.0975 9.30902 14.315 9.1854 14.5C9.06179 14.685 8.88609 14.8292 8.68052 14.9144C8.47495 14.9995 8.24875 15.0218 8.03052 14.9784C7.81229 14.935 7.61184 14.8278 7.4545 14.6705C7.29717 14.5132 7.19002 14.3127 7.14662 14.0945C7.10321 13.8762 7.12549 13.65 7.21064 13.4445C7.29578 13.2389 7.43998 13.0632 7.62498 12.9396C7.80999 12.816 8.0275 12.75 8.25 12.75C8.54837 12.75 8.83452 12.8685 9.0455 13.0795C9.25647 13.2905 9.375 13.5766 9.375 13.875ZM13.125 13.875C13.125 14.0975 13.059 14.315 12.9354 14.5C12.8118 14.685 12.6361 14.8292 12.4305 14.9144C12.225 14.9995 11.9988 15.0218 11.7805 14.9784C11.5623 14.935 11.3618 14.8278 11.2045 14.6705C11.0472 14.5132 10.94 14.3127 10.8966 14.0945C10.8532 13.8762 10.8755 13.65 10.9606 13.4445C11.0458 13.2389 11.19 13.0632 11.375 12.9396C11.56 12.816 11.7775 12.75 12 12.75C12.2984 12.75 12.5845 12.8685 12.7955 13.0795C13.0065 13.2905 13.125 13.5766 13.125 13.875ZM16.875 13.875C16.875 14.0975 16.809 14.315 16.6854 14.5C16.5618 14.685 16.3861 14.8292 16.1805 14.9144C15.975 14.9995 15.7488 15.0218 15.5305 14.9784C15.3123 14.935 15.1118 14.8278 14.9545 14.6705C14.7972 14.5132 14.69 14.3127 14.6466 14.0945C14.6032 13.8762 14.6255 13.65 14.7106 13.4445C14.7958 13.2389 14.94 13.0632 15.125 12.9396C15.31 12.816 15.5275 12.75 15.75 12.75C16.0484 12.75 16.3345 12.8685 16.5455 13.0795C16.7565 13.2905 16.875 13.5766 16.875 13.875ZM9.375 17.625C9.375 17.8475 9.30902 18.065 9.1854 18.25C9.06179 18.435 8.88609 18.5792 8.68052 18.6644C8.47495 18.7495 8.24875 18.7718 8.03052 18.7284C7.81229 18.685 7.61184 18.5778 7.4545 18.4205C7.29717 18.2632 7.19002 18.0627 7.14662 17.8445C7.10321 17.6262 7.12549 17.4 7.21064 17.1945C7.29578 16.9889 7.43998 16.8132 7.62498 16.6896C7.80999 16.566 8.0275 16.5 8.25 16.5C8.54837 16.5 8.83452 16.6185 9.0455 16.8295C9.25647 17.0405 9.375 17.3266 9.375 17.625ZM13.125 17.625C13.125 17.8475 13.059 18.065 12.9354 18.25C12.8118 18.435 12.6361 18.5792 12.4305 18.6644C12.225 18.7495 11.9988 18.7718 11.7805 18.7284C11.5623 18.685 11.3618 18.5778 11.2045 18.4205C11.0472 18.2632 10.94 18.0627 10.8966 17.8445C10.8532 17.6262 10.8755 17.4 10.9606 17.1945C11.0458 16.9889 11.19 16.8132 11.375 16.6896C11.56 16.566 11.7775 16.5 12 16.5C12.2984 16.5 12.5845 16.6185 12.7955 16.8295C13.0065 17.0405 13.125 17.3266 13.125 17.625ZM16.875 17.625C16.875 17.8475 16.809 18.065 16.6854 18.25C16.5618 18.435 16.3861 18.5792 16.1805 18.6644C15.975 18.7495 15.7488 18.7718 15.5305 18.7284C15.3123 18.685 15.1118 18.5778 14.9545 18.4205C14.7972 18.2632 14.69 18.0627 14.6466 17.8445C14.6032 17.6262 14.6255 17.4 14.7106 17.1945C14.7958 16.9889 14.94 16.8132 15.125 16.6896C15.31 16.566 15.5275 16.5 15.75 16.5C16.0484 16.5 16.3345 16.6185 16.5455 16.8295C16.7565 17.0405 16.875 17.3266 16.875 17.625Z"
+                      fill="#861E27"
+                    />
+                  </svg>
                 </div>
               </div>
+              <div className="move">
+                <div className="spent">34%</div>
+                <div className="spentcont">Spent</div>
+              </div>
+              <div className="budg">(&#8377;124000 of &nbsp;&#8377;500000)</div>
+              <div className="lt">Last Transaction: 5/6/2024</div>
             </div>
           </div>
-          <ToDoList/>
-          <div className="pos-abs paymentsdue-2136281" id="id-2136281">
-            <div className="pos-abs payments-due-th-2136282" id="id-2136282">
-              <span className="payments-due-th-2136282-0 ">
-                {"Payments Due This Week ("}
-              </span>
-              <span className="payments-due-th-2136282-1 ">{"3"}</span>
-              <span className="payments-due-th-2136282-2 ">{")"}</span>
+          {/*boxmodel*/}
+          <ToDoList />
+          <div className="paymentschedule" id="id-2136281">
+            <div>
+              <h1>Payments Due This Week (3)</h1>
             </div>
-            <div className="pos-abs paymentreminder-2136283" id="id-2136283">
-              <div className="pos-abs paymentwidget-2136284" id="id-2136284">
-                <div className="pos-abs widgetframe-2136285" id="id-2136285">
-                  <div
-                    className="pos-abs checkpaymentupd-2136286"
-                    id="id-2136286"
-                  >
-                    <div className="pos-abs paytext-2136288" id="id-2136288">
-                      <div
-                        className="pos-abs finalise-catere-2136289"
-                        id="id-2136289"
-                      >
-                        <span className="finalise-catere-2136289-0 ">
-                          {"Finalise Caterer"}
-                        </span>
-                      </div>
-                      <div
-                        className="pos-abs may-25-sunday-2136290"
-                        id="id-2136290"
-                      >
-                        <span className="may-25-sunday-2136290-0 ">
-                          {"May 25, Sunday"}
-                        </span>
-                      </div>
-                    </div>
-                    <div
-                      className="pos-abs component-1-2136287"
-                      id="id-2136287"
-                    >
-                      <div
-                        className="pos-abs rectangle-6449-I2136287_120522"
-                        id="id-I2136287_120522"
-                      ></div>
-                    </div>
+            <br />
+            <div className="works">
+              <div className="work1">
+                <div className="myu">
+                  <div className="colordiv"></div>
+                  <div className="abcwork">
+                    <h3>Finalize Caterer</h3>
+                    <p>May, 25 Sunday</p>
                   </div>
-                  <div
-                    className="pos-abs callmsgnotify-2136291"
-                    id="id-2136291"
-                  >
-                    <div className="pos-abs phone-2136292" id="id-2136292">
-                      <div
-                        className="pos-abs vector-I2136292_88996373"
-                        id="id-I2136292_88996373"
-                      >
-                        <div
-                          className="nodeBg-I2136292_88996373 pos-abs pos-init fill-parent image-div bg-contain bg-no-repeat "
-                          id="id-bg-I2136292_88996373"
-                        ></div>
-                      </div>
-                    </div>
-                    <div
-                      className="pos-abs chatcircletext-2136293"
-                      id="id-2136293"
+                </div>
+                <div className="svgcont">
+                  <div className="call ">
+                    <svg
+                      width="20"
+                      height="21"
+                      viewBox="0 0 16 17"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
                     >
-                      <div
-                        className="pos-abs vector-I2136293_88994660"
-                        id="id-I2136293_88994660"
-                      >
-                        <div
-                          className="nodeBg-I2136293_88994660 pos-abs pos-init fill-parent image-div bg-contain bg-no-repeat "
-                          id="id-bg-I2136293_88994660"
-                        ></div>
-                      </div>
-                    </div>
-                    <div
-                      className="pos-abs bellringing-2136294"
-                      id="id-2136294"
+                      <path
+                        d="M13.8981 10.4036L10.9538 9.08425L10.9456 9.0805C10.7928 9.01512 10.626 8.98888 10.4605 9.00416C10.2949 9.01944 10.1358 9.07575 9.99751 9.168C9.98122 9.17875 9.96557 9.19044 9.95063 9.203L8.42938 10.4999C7.46563 10.0317 6.47063 9.04425 6.00251 8.093L7.30126 6.54862C7.31376 6.533 7.32563 6.51737 7.33688 6.5005C7.42715 6.36256 7.48192 6.20445 7.49631 6.04023C7.5107 5.87601 7.48428 5.71078 7.41938 5.55925V5.55175L6.09626 2.60237C6.01047 2.40441 5.86296 2.23951 5.67575 2.13227C5.48854 2.02504 5.27166 1.98122 5.05751 2.00737C4.21061 2.11882 3.43324 2.53473 2.87059 3.17743C2.30794 3.82014 1.99847 4.64568 2.00001 5.49987C2.00001 10.4624 6.03751 14.4999 11 14.4999C11.8542 14.5014 12.6797 14.1919 13.3224 13.6293C13.9651 13.0666 14.3811 12.2893 14.4925 11.4424C14.5187 11.2283 14.475 11.0115 14.3679 10.8243C14.2607 10.6371 14.096 10.4895 13.8981 10.4036ZM11 13.4999C8.87898 13.4976 6.8455 12.654 5.34571 11.1542C3.84592 9.65438 3.00232 7.62089 3.00001 5.49987C2.99765 4.88955 3.21754 4.29925 3.61859 3.83919C4.01964 3.37913 4.57444 3.08079 5.17938 2.99987C5.17913 3.00237 5.17913 3.00488 5.17938 3.00737L6.49188 5.94487L5.20001 7.49112C5.18689 7.50621 5.17498 7.5223 5.16438 7.53925C5.07033 7.68357 5.01515 7.84975 5.0042 8.02166C4.99325 8.19358 5.0269 8.36541 5.10188 8.5205C5.66813 9.67862 6.83501 10.8367 8.00563 11.4024C8.16186 11.4767 8.33468 11.5091 8.50722 11.4966C8.67976 11.4842 8.8461 11.4271 8.99001 11.3311C9.00605 11.3203 9.02149 11.3086 9.03626 11.2961L10.5556 9.99987L13.4931 11.3155C13.4931 11.3155 13.4981 11.3155 13.5 11.3155C13.4201 11.9213 13.1222 12.4772 12.662 12.8793C12.2019 13.2813 11.611 13.5019 11 13.4999Z"
+                        fill="#343330"
+                        fill-opacity="0.7"
+                      />
+                    </svg>
+                  </div>
+                  <div className="whatsapp">
+                    <svg
+                      width="20"
+                      height="21"
+                      viewBox="0 0 16 17"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
                     >
-                      <div
-                        className="pos-abs vector-I2136294_889942207"
-                        id="id-I2136294_889942207"
-                      >
-                        <div
-                          className="nodeBg-I2136294_889942207 pos-abs pos-init fill-parent image-div bg-contain bg-no-repeat "
-                          id="id-bg-I2136294_889942207"
-                        ></div>
-                      </div>
-                    </div>
+                      <path
+                        d="M10.5 7.50026C10.5 7.63287 10.4473 7.76005 10.3536 7.85382C10.2598 7.94759 10.1326 8.00026 10 8.00026H6C5.86739 8.00026 5.74021 7.94759 5.64645 7.85382C5.55268 7.76005 5.5 7.63287 5.5 7.50026C5.5 7.36766 5.55268 7.24048 5.64645 7.14671C5.74021 7.05294 5.86739 7.00026 6 7.00026H10C10.1326 7.00026 10.2598 7.05294 10.3536 7.14671C10.4473 7.24048 10.5 7.36766 10.5 7.50026ZM10 9.00026H6C5.86739 9.00026 5.74021 9.05294 5.64645 9.14671C5.55268 9.24048 5.5 9.36766 5.5 9.50026C5.5 9.63287 5.55268 9.76005 5.64645 9.85382C5.74021 9.94759 5.86739 10.0003 6 10.0003H10C10.1326 10.0003 10.2598 9.94759 10.3536 9.85382C10.4473 9.76005 10.5 9.63287 10.5 9.50026C10.5 9.36766 10.4473 9.24048 10.3536 9.14671C10.2598 9.05294 10.1326 9.00026 10 9.00026ZM14.5 8.50026C14.5002 9.62247 14.2099 10.7256 13.6574 11.7024C13.1048 12.6791 12.3087 13.4961 11.3467 14.0739C10.3847 14.6517 9.28942 14.9706 8.16759 14.9995C7.04575 15.0285 5.93554 14.7665 4.945 14.239L2.81687 14.9484C2.64068 15.0071 2.4516 15.0157 2.27083 14.973C2.09006 14.9304 1.92474 14.8382 1.79341 14.7069C1.66207 14.5755 1.56991 14.4102 1.52725 14.2294C1.48459 14.0487 1.49312 13.8596 1.55187 13.6834L2.26125 11.5553C1.79759 10.6835 1.53862 9.71763 1.504 8.73087C1.46937 7.74411 1.66 6.76243 2.06142 5.86035C2.46283 4.95826 3.06448 4.15948 3.8207 3.52463C4.57691 2.88979 5.46782 2.43556 6.42579 2.19644C7.38376 1.95731 8.38362 1.93957 9.34948 2.14456C10.3153 2.34955 11.2218 2.77188 12.0001 3.3795C12.7783 3.98711 13.4079 4.76405 13.8411 5.65132C14.2743 6.5386 14.4996 7.5129 14.5 8.50026ZM13.5 8.50026C13.4998 7.65659 13.3054 6.82428 12.9321 6.06773C12.5587 5.31118 12.0163 4.65066 11.3468 4.13728C10.6773 3.62391 9.89863 3.27143 9.07111 3.10713C8.24359 2.94283 7.38936 2.9711 6.57452 3.18976C5.75968 3.40842 5.00606 3.81161 4.37197 4.36813C3.73788 4.92466 3.24032 5.61959 2.91779 6.39918C2.59525 7.17876 2.45639 8.0221 2.51193 8.86394C2.56748 9.70579 2.81595 10.5236 3.23812 11.254C3.27356 11.3153 3.29556 11.3835 3.30267 11.454C3.30978 11.5244 3.30184 11.5956 3.27937 11.6628L2.5 14.0003L4.8375 13.2209C4.88841 13.2035 4.94183 13.1947 4.99562 13.1946C5.08344 13.1948 5.16966 13.2181 5.24562 13.2621C6.08175 13.7459 7.03054 14.0009 7.99653 14.0015C8.96251 14.0021 9.91162 13.7483 10.7484 13.2656C11.5851 12.7829 12.2799 12.0883 12.763 11.2518C13.246 10.4153 13.5002 9.46625 13.5 8.50026Z"
+                        fill="#343330"
+                        fill-opacity="0.7"
+                      />
+                    </svg>
+                  </div>
+                  <div className="notification">
+                    <svg
+                      width="19"
+                      height="18"
+                      viewBox="0 0 14 14"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M13 3.94401C12.8823 4.00496 12.7452 4.01668 12.6189 3.9766C12.4925 3.93652 12.3873 3.84791 12.3262 3.73026C11.849 2.78744 11.1266 1.99057 10.235 1.42338C10.1794 1.38834 10.1313 1.34269 10.0934 1.28905C10.0554 1.2354 10.0285 1.17482 10.0139 1.11074C9.99943 1.04667 9.99769 0.980369 10.0088 0.915621C10.0199 0.850874 10.0437 0.788949 10.0787 0.733384C10.1138 0.677818 10.1594 0.6297 10.2131 0.591776C10.2667 0.553851 10.3273 0.526864 10.3914 0.512355C10.4554 0.497846 10.5217 0.496099 10.5865 0.507214C10.6512 0.518328 10.7132 0.542087 10.7687 0.577134C11.8078 1.24247 12.6516 2.17186 13.2137 3.27026C13.2747 3.38796 13.2864 3.52504 13.2463 3.65138C13.2062 3.77772 13.1176 3.88297 13 3.94401ZM1.23185 4.00026C1.32345 4.00022 1.41328 3.97502 1.49153 3.9274C1.56979 3.87979 1.63346 3.81159 1.6756 3.73026C2.15285 2.78744 2.87523 1.99057 3.76685 1.42338C3.87907 1.3526 3.95857 1.24014 3.98787 1.11074C4.01718 0.981344 3.99388 0.845603 3.9231 0.733384C3.85232 0.621164 3.73986 0.541658 3.61046 0.512355C3.48106 0.483053 3.34532 0.506354 3.2331 0.577134C2.19397 1.24247 1.35021 2.17186 0.788096 3.27026C0.74862 3.34646 0.729421 3.43154 0.732346 3.5173C0.735272 3.60307 0.760224 3.68664 0.804801 3.75998C0.849378 3.83331 0.91208 3.89393 0.986872 3.93602C1.06166 3.9781 1.14603 4.00022 1.23185 4.00026ZM12.8631 10.4965C12.9517 10.6484 12.9986 10.821 12.9992 10.9968C12.9998 11.1727 12.9541 11.3456 12.8665 11.4981C12.779 11.6506 12.6528 11.7773 12.5007 11.8655C12.3485 11.9536 12.1758 12.0001 12 12.0003H9.44997C9.33521 12.5654 9.02861 13.0735 8.5821 13.4384C8.13559 13.8034 7.57665 14.0028 6.99997 14.0028C6.42329 14.0028 5.86435 13.8034 5.41784 13.4384C4.97134 13.0735 4.66473 12.5654 4.54997 12.0003H1.99997C1.82423 11.9999 1.65169 11.9533 1.49973 11.865C1.34776 11.7767 1.22173 11.65 1.13435 11.4975C1.04696 11.3451 1.00129 11.1722 1.00195 10.9965C1.00261 10.8208 1.04957 10.6483 1.1381 10.4965C1.70122 9.52463 1.99997 8.14276 1.99997 6.50026C1.99997 5.17418 2.52676 3.90241 3.46444 2.96472C4.40212 2.02704 5.67389 1.50026 6.99997 1.50026C8.32605 1.50026 9.59782 2.02704 10.5355 2.96472C11.4732 3.90241 12 5.17418 12 6.50026C12 8.14213 12.2987 9.52401 12.8631 10.4965ZM8.41372 12.0003H5.58622C5.68981 12.2924 5.88135 12.5453 6.13451 12.7241C6.38767 12.9029 6.69002 12.9989 6.99997 12.9989C7.30993 12.9989 7.61227 12.9029 7.86543 12.7241C8.11859 12.5453 8.31013 12.2924 8.41372 12.0003ZM12 11.0003C11.335 9.85838 11 8.34463 11 6.50026C11 5.43939 10.5785 4.42198 9.8284 3.67183C9.07825 2.92169 8.06084 2.50026 6.99997 2.50026C5.93911 2.50026 4.92169 2.92169 4.17154 3.67183C3.4214 4.42198 2.99997 5.43939 2.99997 6.50026C2.99997 8.34526 2.66372 9.85901 1.99997 11.0003H12Z"
+                        fill="#343330"
+                        fill-opacity="0.7"
+                      />
+                    </svg>
                   </div>
                 </div>
               </div>
-              <div className="pos-abs paymentwidget-2136295" id="id-2136295">
-                <div className="pos-abs widgetframe-2136296" id="id-2136296">
-                  <div
-                    className="pos-abs checkpaymentupd-2136297"
-                    id="id-2136297"
-                  >
-                    <div className="pos-abs paytext-2136299" id="id-2136299">
-                      <div
-                        className="pos-abs finalise-catere-2136300"
-                        id="id-2136300"
-                      >
-                        <span className="finalise-catere-2136300-0 ">
-                          {"Finalise Caterer"}
-                        </span>
-                      </div>
-                      <div
-                        className="pos-abs may-25-sunday-2136301"
-                        id="id-2136301"
-                      >
-                        <span className="may-25-sunday-2136301-0 ">
-                          {"May 25, Sunday"}
-                        </span>
-                      </div>
-                    </div>
-                    <div
-                      className="pos-abs component-1-2136298"
-                      id="id-2136298"
-                    >
-                      <div
-                        className="pos-abs rectangle-6449-I2136298_120522"
-                        id="id-I2136298_120522"
-                      ></div>
-                    </div>
+              <div className="work1">
+                <div className="myu">
+                  <div className="colordiv"></div>
+                  <div className="abcwork">
+                    <h3>Venue Selection</h3>
+                    <p>May, 27 Tuesday</p>
                   </div>
-                  <div
-                    className="pos-abs callmsgnotify-2136302"
-                    id="id-2136302"
-                  >
-                    <div className="pos-abs phone-2136303" id="id-2136303">
-                      <div
-                        className="pos-abs vector-I2136303_88996373"
-                        id="id-I2136303_88996373"
-                      >
-                        <div
-                          className="nodeBg-I2136303_88996373 pos-abs pos-init fill-parent image-div bg-contain bg-no-repeat "
-                          id="id-bg-I2136303_88996373"
-                        ></div>
-                      </div>
-                    </div>
-                    <div
-                      className="pos-abs chatcircletext-2136304"
-                      id="id-2136304"
+                </div>
+                <div className="svgcont">
+                  <div className="call ">
+                    <svg
+                      width="20"
+                      height="21"
+                      viewBox="0 0 16 17"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
                     >
-                      <div
-                        className="pos-abs vector-I2136304_88994660"
-                        id="id-I2136304_88994660"
-                      >
-                        <div
-                          className="nodeBg-I2136304_88994660 pos-abs pos-init fill-parent image-div bg-contain bg-no-repeat "
-                          id="id-bg-I2136304_88994660"
-                        ></div>
-                      </div>
-                    </div>
-                    <div
-                      className="pos-abs bellringing-2136305"
-                      id="id-2136305"
+                      <path
+                        d="M13.8981 10.4036L10.9538 9.08425L10.9456 9.0805C10.7928 9.01512 10.626 8.98888 10.4605 9.00416C10.2949 9.01944 10.1358 9.07575 9.99751 9.168C9.98122 9.17875 9.96557 9.19044 9.95063 9.203L8.42938 10.4999C7.46563 10.0317 6.47063 9.04425 6.00251 8.093L7.30126 6.54862C7.31376 6.533 7.32563 6.51737 7.33688 6.5005C7.42715 6.36256 7.48192 6.20445 7.49631 6.04023C7.5107 5.87601 7.48428 5.71078 7.41938 5.55925V5.55175L6.09626 2.60237C6.01047 2.40441 5.86296 2.23951 5.67575 2.13227C5.48854 2.02504 5.27166 1.98122 5.05751 2.00737C4.21061 2.11882 3.43324 2.53473 2.87059 3.17743C2.30794 3.82014 1.99847 4.64568 2.00001 5.49987C2.00001 10.4624 6.03751 14.4999 11 14.4999C11.8542 14.5014 12.6797 14.1919 13.3224 13.6293C13.9651 13.0666 14.3811 12.2893 14.4925 11.4424C14.5187 11.2283 14.475 11.0115 14.3679 10.8243C14.2607 10.6371 14.096 10.4895 13.8981 10.4036ZM11 13.4999C8.87898 13.4976 6.8455 12.654 5.34571 11.1542C3.84592 9.65438 3.00232 7.62089 3.00001 5.49987C2.99765 4.88955 3.21754 4.29925 3.61859 3.83919C4.01964 3.37913 4.57444 3.08079 5.17938 2.99987C5.17913 3.00237 5.17913 3.00488 5.17938 3.00737L6.49188 5.94487L5.20001 7.49112C5.18689 7.50621 5.17498 7.5223 5.16438 7.53925C5.07033 7.68357 5.01515 7.84975 5.0042 8.02166C4.99325 8.19358 5.0269 8.36541 5.10188 8.5205C5.66813 9.67862 6.83501 10.8367 8.00563 11.4024C8.16186 11.4767 8.33468 11.5091 8.50722 11.4966C8.67976 11.4842 8.8461 11.4271 8.99001 11.3311C9.00605 11.3203 9.02149 11.3086 9.03626 11.2961L10.5556 9.99987L13.4931 11.3155C13.4931 11.3155 13.4981 11.3155 13.5 11.3155C13.4201 11.9213 13.1222 12.4772 12.662 12.8793C12.2019 13.2813 11.611 13.5019 11 13.4999Z"
+                        fill="#343330"
+                        fill-opacity="0.7"
+                      />
+                    </svg>
+                  </div>
+                  <div className="whatsapp">
+                    <svg
+                      width="20"
+                      height="21"
+                      viewBox="0 0 16 17"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
                     >
-                      <div
-                        className="pos-abs vector-I2136305_889942207"
-                        id="id-I2136305_889942207"
-                      >
-                        <div
-                          className="nodeBg-I2136305_889942207 pos-abs pos-init fill-parent image-div bg-contain bg-no-repeat "
-                          id="id-bg-I2136305_889942207"
-                        ></div>
-                      </div>
-                    </div>
+                      <path
+                        d="M10.5 7.50026C10.5 7.63287 10.4473 7.76005 10.3536 7.85382C10.2598 7.94759 10.1326 8.00026 10 8.00026H6C5.86739 8.00026 5.74021 7.94759 5.64645 7.85382C5.55268 7.76005 5.5 7.63287 5.5 7.50026C5.5 7.36766 5.55268 7.24048 5.64645 7.14671C5.74021 7.05294 5.86739 7.00026 6 7.00026H10C10.1326 7.00026 10.2598 7.05294 10.3536 7.14671C10.4473 7.24048 10.5 7.36766 10.5 7.50026ZM10 9.00026H6C5.86739 9.00026 5.74021 9.05294 5.64645 9.14671C5.55268 9.24048 5.5 9.36766 5.5 9.50026C5.5 9.63287 5.55268 9.76005 5.64645 9.85382C5.74021 9.94759 5.86739 10.0003 6 10.0003H10C10.1326 10.0003 10.2598 9.94759 10.3536 9.85382C10.4473 9.76005 10.5 9.63287 10.5 9.50026C10.5 9.36766 10.4473 9.24048 10.3536 9.14671C10.2598 9.05294 10.1326 9.00026 10 9.00026ZM14.5 8.50026C14.5002 9.62247 14.2099 10.7256 13.6574 11.7024C13.1048 12.6791 12.3087 13.4961 11.3467 14.0739C10.3847 14.6517 9.28942 14.9706 8.16759 14.9995C7.04575 15.0285 5.93554 14.7665 4.945 14.239L2.81687 14.9484C2.64068 15.0071 2.4516 15.0157 2.27083 14.973C2.09006 14.9304 1.92474 14.8382 1.79341 14.7069C1.66207 14.5755 1.56991 14.4102 1.52725 14.2294C1.48459 14.0487 1.49312 13.8596 1.55187 13.6834L2.26125 11.5553C1.79759 10.6835 1.53862 9.71763 1.504 8.73087C1.46937 7.74411 1.66 6.76243 2.06142 5.86035C2.46283 4.95826 3.06448 4.15948 3.8207 3.52463C4.57691 2.88979 5.46782 2.43556 6.42579 2.19644C7.38376 1.95731 8.38362 1.93957 9.34948 2.14456C10.3153 2.34955 11.2218 2.77188 12.0001 3.3795C12.7783 3.98711 13.4079 4.76405 13.8411 5.65132C14.2743 6.5386 14.4996 7.5129 14.5 8.50026ZM13.5 8.50026C13.4998 7.65659 13.3054 6.82428 12.9321 6.06773C12.5587 5.31118 12.0163 4.65066 11.3468 4.13728C10.6773 3.62391 9.89863 3.27143 9.07111 3.10713C8.24359 2.94283 7.38936 2.9711 6.57452 3.18976C5.75968 3.40842 5.00606 3.81161 4.37197 4.36813C3.73788 4.92466 3.24032 5.61959 2.91779 6.39918C2.59525 7.17876 2.45639 8.0221 2.51193 8.86394C2.56748 9.70579 2.81595 10.5236 3.23812 11.254C3.27356 11.3153 3.29556 11.3835 3.30267 11.454C3.30978 11.5244 3.30184 11.5956 3.27937 11.6628L2.5 14.0003L4.8375 13.2209C4.88841 13.2035 4.94183 13.1947 4.99562 13.1946C5.08344 13.1948 5.16966 13.2181 5.24562 13.2621C6.08175 13.7459 7.03054 14.0009 7.99653 14.0015C8.96251 14.0021 9.91162 13.7483 10.7484 13.2656C11.5851 12.7829 12.2799 12.0883 12.763 11.2518C13.246 10.4153 13.5002 9.46625 13.5 8.50026Z"
+                        fill="#343330"
+                        fill-opacity="0.7"
+                      />
+                    </svg>
+                  </div>
+                  <div className="notification">
+                    <svg
+                      width="19"
+                      height="18"
+                      viewBox="0 0 14 14"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M13 3.94401C12.8823 4.00496 12.7452 4.01668 12.6189 3.9766C12.4925 3.93652 12.3873 3.84791 12.3262 3.73026C11.849 2.78744 11.1266 1.99057 10.235 1.42338C10.1794 1.38834 10.1313 1.34269 10.0934 1.28905C10.0554 1.2354 10.0285 1.17482 10.0139 1.11074C9.99943 1.04667 9.99769 0.980369 10.0088 0.915621C10.0199 0.850874 10.0437 0.788949 10.0787 0.733384C10.1138 0.677818 10.1594 0.6297 10.2131 0.591776C10.2667 0.553851 10.3273 0.526864 10.3914 0.512355C10.4554 0.497846 10.5217 0.496099 10.5865 0.507214C10.6512 0.518328 10.7132 0.542087 10.7687 0.577134C11.8078 1.24247 12.6516 2.17186 13.2137 3.27026C13.2747 3.38796 13.2864 3.52504 13.2463 3.65138C13.2062 3.77772 13.1176 3.88297 13 3.94401ZM1.23185 4.00026C1.32345 4.00022 1.41328 3.97502 1.49153 3.9274C1.56979 3.87979 1.63346 3.81159 1.6756 3.73026C2.15285 2.78744 2.87523 1.99057 3.76685 1.42338C3.87907 1.3526 3.95857 1.24014 3.98787 1.11074C4.01718 0.981344 3.99388 0.845603 3.9231 0.733384C3.85232 0.621164 3.73986 0.541658 3.61046 0.512355C3.48106 0.483053 3.34532 0.506354 3.2331 0.577134C2.19397 1.24247 1.35021 2.17186 0.788096 3.27026C0.74862 3.34646 0.729421 3.43154 0.732346 3.5173C0.735272 3.60307 0.760224 3.68664 0.804801 3.75998C0.849378 3.83331 0.91208 3.89393 0.986872 3.93602C1.06166 3.9781 1.14603 4.00022 1.23185 4.00026ZM12.8631 10.4965C12.9517 10.6484 12.9986 10.821 12.9992 10.9968C12.9998 11.1727 12.9541 11.3456 12.8665 11.4981C12.779 11.6506 12.6528 11.7773 12.5007 11.8655C12.3485 11.9536 12.1758 12.0001 12 12.0003H9.44997C9.33521 12.5654 9.02861 13.0735 8.5821 13.4384C8.13559 13.8034 7.57665 14.0028 6.99997 14.0028C6.42329 14.0028 5.86435 13.8034 5.41784 13.4384C4.97134 13.0735 4.66473 12.5654 4.54997 12.0003H1.99997C1.82423 11.9999 1.65169 11.9533 1.49973 11.865C1.34776 11.7767 1.22173 11.65 1.13435 11.4975C1.04696 11.3451 1.00129 11.1722 1.00195 10.9965C1.00261 10.8208 1.04957 10.6483 1.1381 10.4965C1.70122 9.52463 1.99997 8.14276 1.99997 6.50026C1.99997 5.17418 2.52676 3.90241 3.46444 2.96472C4.40212 2.02704 5.67389 1.50026 6.99997 1.50026C8.32605 1.50026 9.59782 2.02704 10.5355 2.96472C11.4732 3.90241 12 5.17418 12 6.50026C12 8.14213 12.2987 9.52401 12.8631 10.4965ZM8.41372 12.0003H5.58622C5.68981 12.2924 5.88135 12.5453 6.13451 12.7241C6.38767 12.9029 6.69002 12.9989 6.99997 12.9989C7.30993 12.9989 7.61227 12.9029 7.86543 12.7241C8.11859 12.5453 8.31013 12.2924 8.41372 12.0003ZM12 11.0003C11.335 9.85838 11 8.34463 11 6.50026C11 5.43939 10.5785 4.42198 9.8284 3.67183C9.07825 2.92169 8.06084 2.50026 6.99997 2.50026C5.93911 2.50026 4.92169 2.92169 4.17154 3.67183C3.4214 4.42198 2.99997 5.43939 2.99997 6.50026C2.99997 8.34526 2.66372 9.85901 1.99997 11.0003H12Z"
+                        fill="#343330"
+                        fill-opacity="0.7"
+                      />
+                    </svg>
                   </div>
                 </div>
               </div>
-              <div className="pos-abs paymentwidget-2136306" id="id-2136306">
-                <div className="pos-abs widgetframe-2136307" id="id-2136307">
-                  <div
-                    className="pos-abs checkpaymentupd-2136308"
-                    id="id-2136308"
-                  >
-                    <div className="pos-abs paytext-2136310" id="id-2136310">
-                      <div
-                        className="pos-abs finalise-catere-2136311"
-                        id="id-2136311"
-                      >
-                        <span className="finalise-catere-2136311-0 ">
-                          {"Finalise Caterer"}
-                        </span>
-                      </div>
-                      <div
-                        className="pos-abs may-25-sunday-2136312"
-                        id="id-2136312"
-                      >
-                        <span className="may-25-sunday-2136312-0 ">
-                          {"May 25, Sunday"}
-                        </span>
-                      </div>
-                    </div>
-                    <div
-                      className="pos-abs component-1-2136309"
-                      id="id-2136309"
-                    >
-                      <div
-                        className="pos-abs rectangle-6449-I2136309_120522"
-                        id="id-I2136309_120522"
-                      ></div>
-                    </div>
+              <div className="work1">
+                <div className="myu">
+                  <div className="colordiv"></div>
+                  <div className="abcwork">
+                    <h3>Invite Office friends</h3>
+                    <p>May, 31 Saturday</p>
                   </div>
-                  <div
-                    className="pos-abs callmsgnotify-2136313"
-                    id="id-2136313"
-                  >
-                    <div className="pos-abs phone-2136314" id="id-2136314">
-                      <div
-                        className="pos-abs vector-I2136314_88996373"
-                        id="id-I2136314_88996373"
-                      >
-                        <div
-                          className="nodeBg-I2136314_88996373 pos-abs pos-init fill-parent image-div bg-contain bg-no-repeat "
-                          id="id-bg-I2136314_88996373"
-                        ></div>
-                      </div>
-                    </div>
-                    <div
-                      className="pos-abs chatcircletext-2136315"
-                      id="id-2136315"
+                </div>
+                <div className="svgcont">
+                  <div className="call ">
+                    <svg
+                      width="20"
+                      height="21"
+                      viewBox="0 0 16 17"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
                     >
-                      <div
-                        className="pos-abs vector-I2136315_88994660"
-                        id="id-I2136315_88994660"
-                      >
-                        <div
-                          className="nodeBg-I2136315_88994660 pos-abs pos-init fill-parent image-div bg-contain bg-no-repeat "
-                          id="id-bg-I2136315_88994660"
-                        ></div>
-                      </div>
-                    </div>
-                    <div
-                      className="pos-abs bellringing-2136316"
-                      id="id-2136316"
+                      <path
+                        d="M13.8981 10.4036L10.9538 9.08425L10.9456 9.0805C10.7928 9.01512 10.626 8.98888 10.4605 9.00416C10.2949 9.01944 10.1358 9.07575 9.99751 9.168C9.98122 9.17875 9.96557 9.19044 9.95063 9.203L8.42938 10.4999C7.46563 10.0317 6.47063 9.04425 6.00251 8.093L7.30126 6.54862C7.31376 6.533 7.32563 6.51737 7.33688 6.5005C7.42715 6.36256 7.48192 6.20445 7.49631 6.04023C7.5107 5.87601 7.48428 5.71078 7.41938 5.55925V5.55175L6.09626 2.60237C6.01047 2.40441 5.86296 2.23951 5.67575 2.13227C5.48854 2.02504 5.27166 1.98122 5.05751 2.00737C4.21061 2.11882 3.43324 2.53473 2.87059 3.17743C2.30794 3.82014 1.99847 4.64568 2.00001 5.49987C2.00001 10.4624 6.03751 14.4999 11 14.4999C11.8542 14.5014 12.6797 14.1919 13.3224 13.6293C13.9651 13.0666 14.3811 12.2893 14.4925 11.4424C14.5187 11.2283 14.475 11.0115 14.3679 10.8243C14.2607 10.6371 14.096 10.4895 13.8981 10.4036ZM11 13.4999C8.87898 13.4976 6.8455 12.654 5.34571 11.1542C3.84592 9.65438 3.00232 7.62089 3.00001 5.49987C2.99765 4.88955 3.21754 4.29925 3.61859 3.83919C4.01964 3.37913 4.57444 3.08079 5.17938 2.99987C5.17913 3.00237 5.17913 3.00488 5.17938 3.00737L6.49188 5.94487L5.20001 7.49112C5.18689 7.50621 5.17498 7.5223 5.16438 7.53925C5.07033 7.68357 5.01515 7.84975 5.0042 8.02166C4.99325 8.19358 5.0269 8.36541 5.10188 8.5205C5.66813 9.67862 6.83501 10.8367 8.00563 11.4024C8.16186 11.4767 8.33468 11.5091 8.50722 11.4966C8.67976 11.4842 8.8461 11.4271 8.99001 11.3311C9.00605 11.3203 9.02149 11.3086 9.03626 11.2961L10.5556 9.99987L13.4931 11.3155C13.4931 11.3155 13.4981 11.3155 13.5 11.3155C13.4201 11.9213 13.1222 12.4772 12.662 12.8793C12.2019 13.2813 11.611 13.5019 11 13.4999Z"
+                        fill="#343330"
+                        fill-opacity="0.7"
+                      />
+                    </svg>
+                  </div>
+                  <div className="whatsapp">
+                    <svg
+                      width="20"
+                      height="21"
+                      viewBox="0 0 16 17"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
                     >
-                      <div
-                        className="pos-abs vector-I2136316_889942207"
-                        id="id-I2136316_889942207"
-                      >
-                        <div
-                          className="nodeBg-I2136316_889942207 pos-abs pos-init fill-parent image-div bg-contain bg-no-repeat "
-                          id="id-bg-I2136316_889942207"
-                        ></div>
-                      </div>
-                    </div>
+                      <path
+                        d="M10.5 7.50026C10.5 7.63287 10.4473 7.76005 10.3536 7.85382C10.2598 7.94759 10.1326 8.00026 10 8.00026H6C5.86739 8.00026 5.74021 7.94759 5.64645 7.85382C5.55268 7.76005 5.5 7.63287 5.5 7.50026C5.5 7.36766 5.55268 7.24048 5.64645 7.14671C5.74021 7.05294 5.86739 7.00026 6 7.00026H10C10.1326 7.00026 10.2598 7.05294 10.3536 7.14671C10.4473 7.24048 10.5 7.36766 10.5 7.50026ZM10 9.00026H6C5.86739 9.00026 5.74021 9.05294 5.64645 9.14671C5.55268 9.24048 5.5 9.36766 5.5 9.50026C5.5 9.63287 5.55268 9.76005 5.64645 9.85382C5.74021 9.94759 5.86739 10.0003 6 10.0003H10C10.1326 10.0003 10.2598 9.94759 10.3536 9.85382C10.4473 9.76005 10.5 9.63287 10.5 9.50026C10.5 9.36766 10.4473 9.24048 10.3536 9.14671C10.2598 9.05294 10.1326 9.00026 10 9.00026ZM14.5 8.50026C14.5002 9.62247 14.2099 10.7256 13.6574 11.7024C13.1048 12.6791 12.3087 13.4961 11.3467 14.0739C10.3847 14.6517 9.28942 14.9706 8.16759 14.9995C7.04575 15.0285 5.93554 14.7665 4.945 14.239L2.81687 14.9484C2.64068 15.0071 2.4516 15.0157 2.27083 14.973C2.09006 14.9304 1.92474 14.8382 1.79341 14.7069C1.66207 14.5755 1.56991 14.4102 1.52725 14.2294C1.48459 14.0487 1.49312 13.8596 1.55187 13.6834L2.26125 11.5553C1.79759 10.6835 1.53862 9.71763 1.504 8.73087C1.46937 7.74411 1.66 6.76243 2.06142 5.86035C2.46283 4.95826 3.06448 4.15948 3.8207 3.52463C4.57691 2.88979 5.46782 2.43556 6.42579 2.19644C7.38376 1.95731 8.38362 1.93957 9.34948 2.14456C10.3153 2.34955 11.2218 2.77188 12.0001 3.3795C12.7783 3.98711 13.4079 4.76405 13.8411 5.65132C14.2743 6.5386 14.4996 7.5129 14.5 8.50026ZM13.5 8.50026C13.4998 7.65659 13.3054 6.82428 12.9321 6.06773C12.5587 5.31118 12.0163 4.65066 11.3468 4.13728C10.6773 3.62391 9.89863 3.27143 9.07111 3.10713C8.24359 2.94283 7.38936 2.9711 6.57452 3.18976C5.75968 3.40842 5.00606 3.81161 4.37197 4.36813C3.73788 4.92466 3.24032 5.61959 2.91779 6.39918C2.59525 7.17876 2.45639 8.0221 2.51193 8.86394C2.56748 9.70579 2.81595 10.5236 3.23812 11.254C3.27356 11.3153 3.29556 11.3835 3.30267 11.454C3.30978 11.5244 3.30184 11.5956 3.27937 11.6628L2.5 14.0003L4.8375 13.2209C4.88841 13.2035 4.94183 13.1947 4.99562 13.1946C5.08344 13.1948 5.16966 13.2181 5.24562 13.2621C6.08175 13.7459 7.03054 14.0009 7.99653 14.0015C8.96251 14.0021 9.91162 13.7483 10.7484 13.2656C11.5851 12.7829 12.2799 12.0883 12.763 11.2518C13.246 10.4153 13.5002 9.46625 13.5 8.50026Z"
+                        fill="#343330"
+                        fill-opacity="0.7"
+                      />
+                    </svg>
+                  </div>
+                  <div className="notification">
+                    <svg
+                      width="19"
+                      height="18"
+                      viewBox="0 0 14 14"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M13 3.94401C12.8823 4.00496 12.7452 4.01668 12.6189 3.9766C12.4925 3.93652 12.3873 3.84791 12.3262 3.73026C11.849 2.78744 11.1266 1.99057 10.235 1.42338C10.1794 1.38834 10.1313 1.34269 10.0934 1.28905C10.0554 1.2354 10.0285 1.17482 10.0139 1.11074C9.99943 1.04667 9.99769 0.980369 10.0088 0.915621C10.0199 0.850874 10.0437 0.788949 10.0787 0.733384C10.1138 0.677818 10.1594 0.6297 10.2131 0.591776C10.2667 0.553851 10.3273 0.526864 10.3914 0.512355C10.4554 0.497846 10.5217 0.496099 10.5865 0.507214C10.6512 0.518328 10.7132 0.542087 10.7687 0.577134C11.8078 1.24247 12.6516 2.17186 13.2137 3.27026C13.2747 3.38796 13.2864 3.52504 13.2463 3.65138C13.2062 3.77772 13.1176 3.88297 13 3.94401ZM1.23185 4.00026C1.32345 4.00022 1.41328 3.97502 1.49153 3.9274C1.56979 3.87979 1.63346 3.81159 1.6756 3.73026C2.15285 2.78744 2.87523 1.99057 3.76685 1.42338C3.87907 1.3526 3.95857 1.24014 3.98787 1.11074C4.01718 0.981344 3.99388 0.845603 3.9231 0.733384C3.85232 0.621164 3.73986 0.541658 3.61046 0.512355C3.48106 0.483053 3.34532 0.506354 3.2331 0.577134C2.19397 1.24247 1.35021 2.17186 0.788096 3.27026C0.74862 3.34646 0.729421 3.43154 0.732346 3.5173C0.735272 3.60307 0.760224 3.68664 0.804801 3.75998C0.849378 3.83331 0.91208 3.89393 0.986872 3.93602C1.06166 3.9781 1.14603 4.00022 1.23185 4.00026ZM12.8631 10.4965C12.9517 10.6484 12.9986 10.821 12.9992 10.9968C12.9998 11.1727 12.9541 11.3456 12.8665 11.4981C12.779 11.6506 12.6528 11.7773 12.5007 11.8655C12.3485 11.9536 12.1758 12.0001 12 12.0003H9.44997C9.33521 12.5654 9.02861 13.0735 8.5821 13.4384C8.13559 13.8034 7.57665 14.0028 6.99997 14.0028C6.42329 14.0028 5.86435 13.8034 5.41784 13.4384C4.97134 13.0735 4.66473 12.5654 4.54997 12.0003H1.99997C1.82423 11.9999 1.65169 11.9533 1.49973 11.865C1.34776 11.7767 1.22173 11.65 1.13435 11.4975C1.04696 11.3451 1.00129 11.1722 1.00195 10.9965C1.00261 10.8208 1.04957 10.6483 1.1381 10.4965C1.70122 9.52463 1.99997 8.14276 1.99997 6.50026C1.99997 5.17418 2.52676 3.90241 3.46444 2.96472C4.40212 2.02704 5.67389 1.50026 6.99997 1.50026C8.32605 1.50026 9.59782 2.02704 10.5355 2.96472C11.4732 3.90241 12 5.17418 12 6.50026C12 8.14213 12.2987 9.52401 12.8631 10.4965ZM8.41372 12.0003H5.58622C5.68981 12.2924 5.88135 12.5453 6.13451 12.7241C6.38767 12.9029 6.69002 12.9989 6.99997 12.9989C7.30993 12.9989 7.61227 12.9029 7.86543 12.7241C8.11859 12.5453 8.31013 12.2924 8.41372 12.0003ZM12 11.0003C11.335 9.85838 11 8.34463 11 6.50026C11 5.43939 10.5785 4.42198 9.8284 3.67183C9.07825 2.92169 8.06084 2.50026 6.99997 2.50026C5.93911 2.50026 4.92169 2.92169 4.17154 3.67183C3.4214 4.42198 2.99997 5.43939 2.99997 6.50026C2.99997 8.34526 2.66372 9.85901 1.99997 11.0003H12Z"
+                        fill="#343330"
+                        fill-opacity="0.7"
+                      />
+                    </svg>
                   </div>
                 </div>
               </div>
             </div>
-            <div className="pos-abs button-2136317" id="id-2136317">
-              <div className="pos-abs view-all-paymen-2136318" id="id-2136318">
-                <span className="view-all-paymen-2136318-0 ">
-                  {"View All Payments"}
-                </span>
-              </div>
-            </div>
+            <button className="viewpay">View All Payments</button>
           </div>
-          <div className="pos-abs guestscard-2136319" id="id-2136319">
-            <div className="pos-abs cardheader-2136320" id="id-2136320">
-              <div className="pos-abs heading-2136321" id="id-2136321">
-                <div
-                  className="pos-abs countries-compa-2136324"
-                  id="id-2136324"
-                >
-                  <span className="countries-compa-2136324-0 ">{"Guests"}</span>
-                </div>
-                <div className="pos-abs whhinfographic-2136322" id="id-2136322">
-                  <div className="pos-abs vector-2136323" id="id-2136323">
-                    <div
-                      className="nodeBg-2136323 pos-abs pos-init fill-parent image-div bg-contain bg-no-repeat "
-                      id="id-bg-2136323"
-                    ></div>
-                  </div>
-                </div>
-              </div>
+          <div className="guestlist">
+            <h3>Guests</h3>
+            <br />
+            <h3>Total Guests : {event?.guests.length} </h3>
+            <div className="piediv">
+              <PieChart data={data} labels={labels} />
             </div>
-            <div className="pos-abs cardbody-2136325" id="id-2136325">
-              <div className="pos-abs frame-106-2136326" id="id-2136326">
-                <div className="pos-abs january-221-2136327" id="id-2136327">
-                  <span className="january-221-2136327-0 ">
-                    {"Total Guests"}
-                  </span>
-                </div>
-                <div className="pos-abs c-548-2136328" id="id-2136328">
-                  <span className="c-548-2136328-0 ">{event?.guests.length}</span>
-                </div>
-              </div>
-            </div>            
-             <div className="piediv"><PieChart data={data} labels={labels} /></div>
-             <button  style={{marginLeft:"3%"}}className="todo-add-button">View Guest</button>
+            <button style={{ marginLeft: "3%" }} className="todo-add-button">
+              View Guest
+            </button>
           </div>
         </section>
-   
-       
-        {/* bottom-nav1 */}
-        <section className="pos-abs bottomnav-2136372" id="id-2136372">
-          <div className="pos-abs opt-2136373" id="id-2136373">
-            <div className="pos-abs houseline-2136374" id="id-2136374">
-              <div
-                className="pos-abs vector-I2136374_127594"
-                id="id-I2136374_127594"
+        {/* dashboard-widgets ends */}
+        <div className="bottom-nav">
+          <a href="#" className="ptp">
+            <div className="icon">
+              <svg
+                width="20"
+                height="17"
+                viewBox="0 0 23 19"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
               >
-                <div
-                  className="nodeBg-I2136374_127594 pos-abs pos-init fill-parent image-div bg-contain bg-no-repeat "
-                  id="id-bg-I2136374_127594"
-                ></div>
-              </div>
+                <path
+                  d="M22 17.5002H20.5V10.7502L20.7194 10.9696C20.8604 11.1103 21.0515 11.1893 21.2507 11.1891C21.4499 11.189 21.6408 11.1097 21.7816 10.9687C21.9223 10.8277 22.0013 10.6366 22.0011 10.4374C22.0009 10.2382 21.9216 10.0472 21.7806 9.90649L12.5603 0.688992C12.279 0.4079 11.8977 0.25 11.5 0.25C11.1023 0.25 10.721 0.4079 10.4397 0.688992L1.21938 9.90649C1.07877 10.0472 0.999827 10.238 0.999914 10.437C1 10.6359 1.07911 10.8267 1.21984 10.9673C1.36057 11.1079 1.5514 11.1868 1.75033 11.1867C1.94927 11.1866 2.14002 11.1075 2.28062 10.9668L2.5 10.7502V17.5002H1C0.801088 17.5002 0.610322 17.5793 0.46967 17.7199C0.329018 17.8606 0.25 18.0513 0.25 18.2502C0.25 18.4492 0.329018 18.6399 0.46967 18.7806C0.610322 18.9212 0.801088 19.0002 1 19.0002H22C22.1989 19.0002 22.3897 18.9212 22.5303 18.7806C22.671 18.6399 22.75 18.4492 22.75 18.2502C22.75 18.0513 22.671 17.8606 22.5303 17.7199C22.3897 17.5793 22.1989 17.5002 22 17.5002ZM4 9.25024L11.5 1.75024L19 9.25024V17.5002H14.5V12.2502C14.5 12.0513 14.421 11.8606 14.2803 11.7199C14.1397 11.5793 13.9489 11.5002 13.75 11.5002H9.25C9.05109 11.5002 8.86032 11.5793 8.71967 11.7199C8.57902 11.8606 8.5 12.0513 8.5 12.2502V17.5002H4V9.25024ZM13 17.5002H10V13.0002H13V17.5002Z"
+                  fill="black"
+                />
+              </svg>
             </div>
-            <div className="pos-abs home-2136375" id="id-2136375">
-              <span className="home-2136375-0 ">{"Home"}</span>
-            </div>
-          </div>
-          <div className="pos-abs opt-2136376" id="id-2136376">
-            <div className="pos-abs aglogo-2136377" id="id-2136377">
-              <div
-                className="pos-abs div-I2136377_127663"
-                id="id-I2136377_127663"
+            <div className="text">Home</div>
+          </a>
+          <a href="#" className="ptp">
+            <div className="icon">
+              <svg
+                width="20"
+                height="17"
+                viewBox="0 0 20 17"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
               >
-                <span className="div-I2136377_127663-0 ">{"अ"}</span>
-              </div>
+                <path
+                  d="M7.47069 14.296C6.43069 14.296 5.51869 14.04 4.73469 13.528C3.96669 13 3.27869 12.304 2.67069 11.44C2.06269 10.56 1.47869 9.592 0.918688 8.536L1.83069 8.008C2.24669 8.76 2.67069 9.488 3.10269 10.192C3.55069 10.88 4.06269 11.448 4.63869 11.896C5.21469 12.328 5.91869 12.544 6.75069 12.544C7.27869 12.544 7.77469 12.432 8.23869 12.208C8.71869 11.968 9.11069 11.64 9.41469 11.224C9.71869 10.808 9.87069 10.32 9.87069 9.76C9.87069 9.168 9.67069 8.72 9.27069 8.416C8.88669 8.112 8.43069 7.96 7.90269 7.96C7.45469 7.96 6.99069 8.056 6.51069 8.248C6.03069 8.424 5.60669 8.6 5.23869 8.776L4.20669 7.024C4.63869 6.784 5.11069 6.568 5.62269 6.376C6.15069 6.184 6.68669 6.088 7.23069 6.088C7.31069 6.088 7.38269 6.088 7.44669 6.088C7.87869 5.816 8.20669 5.496 8.43069 5.128C8.65469 4.744 8.76669 4.36 8.76669 3.976C8.76669 3.56 8.63869 3.216 8.38269 2.944C8.12669 2.672 7.71869 2.536 7.15869 2.536C6.71069 2.536 6.13469 2.648 5.43069 2.872C4.72669 3.08 4.04669 3.392 3.39069 3.808L2.33469 2.008C3.03869 1.592 3.74269 1.288 4.44669 1.096C5.16669 0.903999 5.78269 0.808 6.29469 0.808C7.03069 0.808 7.65469 0.967999 8.16669 1.288C8.67869 1.592 9.09469 1.984 9.41469 2.464C9.73469 2.944 9.96669 3.44 10.1107 3.952C10.2707 4.448 10.3507 4.888 10.3507 5.272C10.3507 5.528 10.3107 5.8 10.2307 6.088C10.1507 6.376 9.95869 6.688 9.65469 7.024C9.75069 7.104 9.85469 7.216 9.96669 7.36C10.2387 7.664 10.5507 7.936 10.9027 8.176C11.2707 8.416 11.8067 8.536 12.5107 8.536C13.3907 8.536 14.1347 8.272 14.7427 7.744L14.7907 2.92H12.2227L11.4067 1.36V1.12H18.7987L19.6147 2.68V2.92H16.8067L16.8547 16.24H16.6147L14.6947 14.992L14.7187 10.168C14.5907 10.216 14.4547 10.248 14.3107 10.264C14.1667 10.28 14.0147 10.288 13.8547 10.288C13.4067 10.288 12.9587 10.208 12.5107 10.048C12.0787 9.888 11.7027 9.704 11.3827 9.496L11.2867 9.544C11.3827 9.768 11.4467 10 11.4787 10.24C11.5267 10.464 11.5507 10.68 11.5507 10.888C11.5507 11.544 11.3667 12.128 10.9987 12.64C10.6467 13.152 10.1667 13.56 9.55869 13.864C8.95069 14.152 8.25469 14.296 7.47069 14.296Z"
+                  fill="black"
+                />
+              </svg>
             </div>
-            <div className="pos-abs atithigram-2136378" id="id-2136378">
-              <span className="atithigram-2136378-0 ">{"Atithigram"}</span>
-            </div>
-          </div>
-          <div className="pos-abs opt-2136379" id="id-2136379">
-            <div className="pos-abs chatscircle-2136380" id="id-2136380">
-              <div
-                className="pos-abs vector-I2136380_127591"
-                id="id-I2136380_127591"
+            <div className="text">Atithigram</div>
+          </a>
+          <a href="#" className="ptp">
+            <div className="icon">
+              <svg
+                width="20"
+                height="17"
+                viewBox="0 0 25 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
               >
-                <div
-                  className="nodeBg-I2136380_127591 pos-abs pos-init fill-parent image-div bg-contain bg-no-repeat "
-                  id="id-bg-I2136380_127591"
-                ></div>
-              </div>
+                <path
+                  d="M22.2566 17.5087C22.7748 16.4338 23.0291 15.2508 22.9983 14.058C22.9675 12.8651 22.6525 11.6968 22.0795 10.6501C21.5066 9.60341 20.6921 8.70854 19.7038 8.03984C18.7155 7.37113 17.5819 6.94789 16.3972 6.80527C16.003 5.88873 15.4299 5.06007 14.7115 4.36779C13.993 3.67551 13.1436 3.13353 12.2131 2.7736C11.2826 2.41367 10.2896 2.24302 9.2923 2.27164C8.295 2.30026 7.31344 2.52758 6.40509 2.94028C5.49673 3.35298 4.67985 3.94277 4.00228 4.67511C3.32471 5.40745 2.80007 6.26762 2.45908 7.20525C2.11809 8.14288 1.9676 9.13912 2.01643 10.1356C2.06526 11.1321 2.31243 12.1089 2.74346 13.0087L2.0619 15.3253C1.98569 15.5839 1.9806 15.8582 2.04715 16.1195C2.1137 16.3808 2.24943 16.6193 2.44007 16.8099C2.63071 17.0005 2.86921 17.1363 3.13047 17.2028C3.39173 17.2694 3.6661 17.2643 3.92471 17.1881L6.24127 16.5065C6.98512 16.8639 7.78261 17.0967 8.6019 17.1956C8.99994 18.1282 9.58297 18.9704 10.3157 19.6713C11.0485 20.3723 11.9158 20.9173 12.8652 21.2735C13.8146 21.6297 14.8264 21.7897 15.8393 21.7438C16.8523 21.698 17.8455 21.4471 18.7588 21.0065L21.0753 21.6881C21.3339 21.7642 21.6081 21.7693 21.8692 21.7027C22.1304 21.6362 22.3688 21.5006 22.5594 21.3101C22.75 21.1196 22.8858 20.8812 22.9524 20.6201C23.0191 20.359 23.0141 20.0848 22.9381 19.8262L22.2566 17.5087ZM6.31252 14.9531C6.24085 14.9532 6.16955 14.9633 6.10065 14.9831L3.50002 15.75L4.26596 13.1475C4.32044 12.9594 4.29924 12.7576 4.2069 12.585C3.52844 11.3161 3.32853 9.84573 3.64362 8.44182C3.9587 7.03792 4.7678 5.79398 5.92341 4.93678C7.07902 4.07958 8.5042 3.66619 9.93914 3.77198C11.3741 3.87778 12.7232 4.4957 13.7406 5.5131C14.758 6.53051 15.376 7.87965 15.4817 9.31459C15.5875 10.7495 15.1742 12.1747 14.3169 13.3303C13.4597 14.4859 12.2158 15.295 10.8119 15.6101C9.40799 15.9252 7.9376 15.7253 6.66877 15.0468C6.55966 14.9864 6.43722 14.9542 6.31252 14.9531ZM20.7303 17.6465L21.5 20.25L18.8975 19.484C18.7095 19.4295 18.5076 19.4507 18.335 19.5431C16.9539 20.2805 15.3394 20.4494 13.8356 20.0137C12.3318 19.578 11.0576 18.5721 10.2847 17.2106C11.3116 17.1034 12.3053 16.7852 13.2034 16.2758C14.1016 15.7665 14.8847 15.077 15.5038 14.2507C16.1229 13.4244 16.5645 12.4791 16.801 11.4741C17.0375 10.469 17.0638 9.42593 16.8781 8.41027C17.7729 8.62117 18.6072 9.03485 19.3167 9.61936C20.0262 10.2039 20.5919 10.9436 20.9701 11.7814C21.3484 12.6193 21.529 13.5328 21.4982 14.4516C21.4673 15.3703 21.2258 16.2697 20.7922 17.0803C20.6989 17.2539 20.6776 17.4573 20.7332 17.6465H20.7303Z"
+                  fill="black"
+                />
+              </svg>
             </div>
-            <div className="pos-abs channels-2136381" id="id-2136381">
-              <span className="channels-2136381-0 ">{"Channels"}</span>
-            </div>
-          </div>
-          <div className="pos-abs opt-2136382" id="id-2136382">
-            <div className="pos-abs usercircle-2136383" id="id-2136383">
-              <div
-                className="pos-abs vector-I2136383_127668"
-                id="id-I2136383_127668"
+            <div className="text">Channels</div>
+          </a>
+          <a href="#" className="ptp">
+            <div className="icon">
+              <svg
+                width="20"
+                height="17"
+                viewBox="0 0 21 20"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
               >
-                <div
-                  className="nodeBg-I2136383_127668 pos-abs pos-init fill-parent image-div bg-contain bg-no-repeat "
-                  id="id-bg-I2136383_127668"
-                ></div>
-              </div>
+                <path
+                  d="M10.5 0.25C8.57164 0.25 6.68657 0.821828 5.08319 1.89317C3.47982 2.96452 2.23013 4.48726 1.49218 6.26884C0.754225 8.05042 0.561142 10.0108 0.937348 11.9021C1.31355 13.7934 2.24215 15.5307 3.60571 16.8943C4.96928 18.2579 6.70656 19.1865 8.59787 19.5627C10.4892 19.9389 12.4496 19.7458 14.2312 19.0078C16.0127 18.2699 17.5355 17.0202 18.6068 15.4168C19.6782 13.8134 20.25 11.9284 20.25 10C20.2473 7.41498 19.2192 4.93661 17.3913 3.10872C15.5634 1.28084 13.085 0.25273 10.5 0.25ZM5.445 16.5156C5.98757 15.6671 6.73501 14.9688 7.61843 14.4851C8.50185 14.0013 9.49283 13.7478 10.5 13.7478C11.5072 13.7478 12.4982 14.0013 13.3816 14.4851C14.265 14.9688 15.0124 15.6671 15.555 16.5156C14.1097 17.6397 12.331 18.2499 10.5 18.2499C8.66905 18.2499 6.89031 17.6397 5.445 16.5156ZM7.5 9.25C7.5 8.65666 7.67595 8.07664 8.0056 7.58329C8.33524 7.08994 8.80378 6.70542 9.35195 6.47836C9.90013 6.2513 10.5033 6.19189 11.0853 6.30764C11.6672 6.4234 12.2018 6.70912 12.6213 7.12868C13.0409 7.54824 13.3266 8.08279 13.4424 8.66473C13.5581 9.24667 13.4987 9.84987 13.2716 10.398C13.0446 10.9462 12.6601 11.4148 12.1667 11.7444C11.6734 12.0741 11.0933 12.25 10.5 12.25C9.70435 12.25 8.94129 11.9339 8.37868 11.3713C7.81607 10.8087 7.5 10.0456 7.5 9.25ZM16.665 15.4759C15.8285 14.2638 14.6524 13.3261 13.2844 12.7806C14.0192 12.2019 14.5554 11.4085 14.8184 10.5108C15.0815 9.6132 15.0582 8.6559 14.752 7.77207C14.4457 6.88825 13.8716 6.12183 13.1096 5.5794C12.3475 5.03696 11.4354 4.74548 10.5 4.74548C9.56462 4.74548 8.65248 5.03696 7.89044 5.5794C7.12839 6.12183 6.55432 6.88825 6.24805 7.77207C5.94179 8.6559 5.91855 9.6132 6.18157 10.5108C6.44459 11.4085 6.9808 12.2019 7.71563 12.7806C6.34765 13.3261 5.17147 14.2638 4.335 15.4759C3.27804 14.2873 2.5872 12.8185 2.34567 11.2464C2.10415 9.67427 2.32224 8.06584 2.97368 6.61478C3.62512 5.16372 4.68213 3.93192 6.01745 3.06769C7.35276 2.20346 8.90943 1.74367 10.5 1.74367C12.0906 1.74367 13.6473 2.20346 14.9826 3.06769C16.3179 3.93192 17.3749 5.16372 18.0263 6.61478C18.6778 8.06584 18.8959 9.67427 18.6543 11.2464C18.4128 12.8185 17.722 14.2873 16.665 15.4759Z"
+                  fill="black"
+                />
+              </svg>
             </div>
-            <div className="pos-abs my-profile-2136384" id="id-2136384">
-              <span className="my-profile-2136384-0 ">{"My Profile"}</span>
-            </div>
-          </div>
-        </section>
-        {/* Home Indicator1 */}
-        
+            <div className="text">My Profile</div>
+          </a>
+        </div>
       </div>
     </div>
   );
 };
-
 
 export default LandingPageCouple;

@@ -54,7 +54,7 @@ const PieChart: React.FC<PieChartProps> = ({ data, labels }) => {
         };
     }, [data, labels]);
 
-    return <canvas ref={chartRef} style={{ maxWidth: '400px' ,marginTop:"32%"}} />;
+    return <canvas ref={chartRef} style={{ maxWidth: '400px'}} />;
 };
 
 export default PieChart;
