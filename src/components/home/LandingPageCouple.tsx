@@ -78,7 +78,7 @@ const LandingPageCouple = () => {
   const handleClick = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     alert("clicked");
     if (iframeRef.current) {
-      iframeRef.current.src = 'https://atithigram-602dhruviii-dhruvi-trivedis-projects.vercel.app/';
+      // iframeRef.current.src = 'https://atithigram.vercel.app/';
     }
   };
   
@@ -116,7 +116,7 @@ const LandingPageCouple = () => {
           <span id="close-iframe" onClick={closeIframe} style={{ position: 'absolute', top: '20px', right: '20px', fontSize: '24px', color: 'white', cursor: 'pointer' }}>×</span>
           <iframe id="iframe" src={iframeUrl} style={{ position: 'absolute', top: '50%', left: '50%', width: '80%', height: '80%', transform: 'translate(-50%, -50%)', border: 'none' }}></iframe>
         </div>
-        {/*<iframe className="iframe-cont" src="https://atithigram-602dhruviii-dhruvi-trivedis-projects.vercel.app/"></iframe> */}
+        <iframe className="iframe-cont" src="https://atithigram.vercel.app/"></iframe>
         {showWhatsapp ? (
         <main style={{position:"relative"}}>       
           <LeftPanel/>
