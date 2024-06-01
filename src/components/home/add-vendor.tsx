@@ -85,22 +85,22 @@ handleFormNext();
 
   return (
     <div className=" px-2 py-6 md:p-6">
-      <Dialog.Title className="text-2xl mb-4 flex flex-row justify-between items-end" style={{ color: 'black' }}><span>Upload Vendors CSV</span> <p className="cursor-pointer underline text-gray-600 text-base float-right " onClick={handleNext}>Do it later</p></Dialog.Title>
-      <p>The file should be in a specific template. Please <a className="underline italic text-red-500 cursor-pointer" onClick={() => downloadTemplate("vendors")}>download our template</a> and ensure that the template matches.</p>
+      <Dialog.Title className="text-xl mb-4 flex flex-row justify-between items-end" style={{ color: 'black' }}><span>Upload Vendors CSV</span> <p className="cursor-pointer underline text-gray-600 text-base float-right " onClick={handleNext}>Do it later</p></Dialog.Title>
+      <p className="mb-4">The file should be in a specific template. Please <a className="underline italic text-red-500 cursor-pointer" onClick={() => downloadTemplate("vendors")}>download our template</a> and ensure that the template matches.</p>
       <div className="mb-4">
         <input type="file" accept=".xlsx, .xls" onChange={handleFileChange} className="w-full border rounded p-2 bg-gray-100 text-black" />
       </div>
       <div className="flex justify-end">
         <button
           type="button"
-          className="bg-gray-500 text-white font-bold py-2 px-4 rounded mr-2 hover:bg-gray-600"
+          className="bg-gray-500 text-white font-bold py-2 px-4 rounded mr-2 hover:bg-gray-600 w-full"
           onClick={onClose}
         >
           Back
         </button>
         <button
           type="button"
-          className="bg-[#b00020] text-white font-bold py-2 px-4 rounded hover:bg-[#9b001a]"
+          className="bg-[#b00020] text-white font-bold py-2 px-4 rounded hover:bg-[#9b001a] w-full"
           onClick={handleVendorUpload}
           disabled={loading}
         >
