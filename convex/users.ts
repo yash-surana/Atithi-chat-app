@@ -173,3 +173,20 @@ export const getEventsById = query({
     return events;
   }
 });
+
+export const updateVendorType = mutation({
+  args: { userId: v.id("users"), vendorType: v.optional(v.string()) },
+  async handler(ctx, args) {
+    const user = await ctx.db.get(args.userId);
+
+    if (!user) {
+      throw new ConvexError("User not found");
+    }
+
+    await ctx.db.patch(args.userId, {
+      vendorType: args.vendorType,
+    });
+
+    return await ctx.db.get(args.userId); // Return updated user
+  }
+});

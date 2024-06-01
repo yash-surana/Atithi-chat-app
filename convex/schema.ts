@@ -10,21 +10,21 @@ export default defineSchema({
     isOnline: v.boolean(),
     role: v.union(v.literal("user"), v.literal("vendor")),
     isonboarding: v.boolean(),
-    events: v
-      .optional(
-        v.array(
-          v.object({
-            eventID: v.id("events"),
-            eventRole: v.union(
-              v.literal("host"),
-              v.literal("guest"),
-              v.literal("vendor")
-            ),
-          })
-        )
+    events: v.optional(
+      v.array(
+        v.object({
+          eventID: v.id("events"),
+          eventRole: v.union(
+            v.literal("host"),
+            v.literal("guest"),
+            v.literal("vendor")
+          ),
+        })
       )
+    ),
+    vendorType: v.optional(v.string())  // Optional vendor type
   }).index("by_tokenIdentifier", ["tokenIdentifier"]),
-
+  
   conversations: defineTable({
     participants: v.array(v.id("users")),
     isGroup: v.boolean(),
