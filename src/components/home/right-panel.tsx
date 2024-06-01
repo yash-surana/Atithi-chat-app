@@ -19,10 +19,10 @@ const RightPanel = () => {
 	const conversationImage = selectedConversation.groupImage || selectedConversation.image;
 
 	return (
-		<div className='w-3/4 flex flex-col'>
-			<div className='w-full sticky top-0 z-50'>
+		<div className='flex flex-col' style={{position:"absolute",top:"0",left:"0",marginLeft:"0%",color:"white",overflow:"hidden",overflowX:"hidden",backgroundColor:"#A8876F"}}>
+			<div className='relative ' >
 				{/* Header */}
-				<div className='flex justify-between bg-gray-primary p-3'>
+				<div className='flex justify-between p-3' style={{position:"relative",marginTop:"0px"}}>
 					<div className='flex gap-3 items-center'>
 						<Avatar>
 							<AvatarImage src={conversationImage || "/placeholder.png"} className='object-cover' />

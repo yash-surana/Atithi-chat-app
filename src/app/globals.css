@@ -64,9 +64,9 @@
 		--left-panel: 30, 100%, 15%; /* Dark cream for left panel */
 		--chat-hover: 30, 100%, 20%; /* Hover state for chat - dark cream */
 
-		--green-primary: 150, 100%, 40%; /* Green for contrast */
-		--green-secondary: 150, 100%, 45%; /* Slightly lighter green */
-		--green-chat: 150, 100%, 20%; /* Darker green for chat background */
+		--green-primary: 24, 50%, 30%; /* Darker */
+		--green-secondary: 30, 64%, 63%; /* Medium */
+		--green-chat: 30, 41%, 89%; /* Slightly light */ /* Slightly light */ /* Darker green for chat background */
 
 		--orange-primary: 35, 100%, 50%; /* Bright orange for playful elements */
 		--orange-secondary: 35, 100%, 25%; /* Dark orange for secondary playful elements */
@@ -108,7 +108,19 @@
 		@apply bg-background text-foreground;
 	}
 }
+.moon{
+background-color:#724425;
+}
+.message-input-container {
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+	z-index: 1000; /* Ensure it stays above other elements */
+  }
+  .icon-red {
+	color: #724425;
 
+  }
 /* WE ADDED => DARK MODE THIN SCROLLBAR */
 @layer components {
 	::-webkit-scrollbar {
@@ -122,3 +134,25 @@
 		background-color: hsl(var(--container));
 	}
 }
+
+/* Define styles for placeholder text */
+.placeholder-gray::placeholder {
+	color: gray;
+  }
+  
+  .placeholder-gray::-webkit-input-placeholder {
+	color: gray;
+  }
+  
+  .placeholder-gray::-moz-placeholder {
+	color: gray;
+  }
+  
+  .placeholder-gray:-ms-input-placeholder {
+	color: gray;
+  }
+  
+  .placeholder-gray::-ms-input-placeholder {
+	color: gray;
+  }
+  

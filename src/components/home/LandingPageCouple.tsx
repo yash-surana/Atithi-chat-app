@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Sidebar from "./Sidebar";
 import Image from "next/image";
 import { api } from "../../../convex/_generated/api";
@@ -10,13 +10,27 @@ import { useQuery } from "convex/react";
 import ToDoList from "./ToDoList";
 import welcomeimg from "../../../public/welcomeimg.png";
 import { useParams } from "next/navigation";
+import LeftPanel from "./left-panel";
+import RightPanel from "./right-panel";
 
 const LandingPageCouple = () => {
+  const [activePanel, setActivePanel] = useState('left');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [iframeUrl, setIframeUrl] = useState("");
 
   const openSidebar = () => setIsSidebarOpen(true);
   const closeSidebar = () => setIsSidebarOpen(false);
+
+  const [showWhatsapp, setShowWhatsapp] = useState(false);
+  const [opendashboard, setopendashboard] = useState(true);
+
+  const openwhatsapp = () => {
+    setShowWhatsapp(true);
+  };
+  const opend = ()=>{
+    setopendashboard(true);
+    setShowWhatsapp(false);
+  };
 
   const openIframe = (url) => {
     setIframeUrl(url);
@@ -58,9 +72,18 @@ const LandingPageCouple = () => {
     const timeDifference = startDate.getTime() - today.getTime();
     daysDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
   }
+  const iframeRef = useRef<HTMLIFrameElement>(null);
+
+  const handleClick = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    alert("clicked");
+    if (iframeRef.current) {
+      iframeRef.current.src = 'https://atithigram-602dhruviii-dhruvi-trivedis-projects.vercel.app/';
+    }
+  };
+  
   return (
     <div className="parent-div">
-      <div className="pos-abs dashboardv2-2136203" id="id-2136203">
+      <div className="dashboardv2-2136203" id="id-2136203">
         {/*sidebar code*/}
         <Sidebar isOpen={isSidebarOpen} closeSidebar={closeSidebar} />
         {/*header starts*/}
@@ -92,7 +115,15 @@ const LandingPageCouple = () => {
           <span id="close-iframe" onClick={closeIframe} style={{ position: 'absolute', top: '20px', right: '20px', fontSize: '24px', color: 'white', cursor: 'pointer' }}>×</span>
           <iframe id="iframe" src={iframeUrl} style={{ position: 'absolute', top: '50%', left: '50%', width: '80%', height: '80%', transform: 'translate(-50%, -50%)', border: 'none' }}></iframe>
         </div>
-        {/* dashboard-widgets1 */}
+        {/*<iframe className="iframe-cont" src="https://atithigram-602dhruviii-dhruvi-trivedis-projects.vercel.app/"></iframe> */}
+        {showWhatsapp ? (
+        <main style={{position:"relative"}}>       
+          <LeftPanel/>
+          <RightPanel/>        
+        </main>
+  
+      ) : (
+        <div>
         <section className="dashboardwidget-2136209" id="id-2136209">
           <div className="welcomeframe-2136367" id="id-2136367">
             <div className="textframe-2136369" id="id-2136369">
@@ -352,9 +383,11 @@ const LandingPageCouple = () => {
             </button>
           </div>
         </section>
+        </div>
+        )}
         {/* dashboard-widgets ends */}
         <div className="bottom-nav">
-          <a href="#" className="ptp">
+          <a href="#" className="ptp" onClick={opend}>
             <div className="icon">
               <svg
                 width="20"
@@ -371,7 +404,7 @@ const LandingPageCouple = () => {
             </div>
             <div className="text">Home</div>
           </a>
-          <a href="#" className="ptp">
+          <a href="#" className="ptp" onClick={handleClick}>
             <div className="icon">
               <svg
                 width="20"
@@ -388,7 +421,7 @@ const LandingPageCouple = () => {
             </div>
             <div className="text">Atithigram</div>
           </a>
-          <a href="#" className="ptp">
+          <a href="#" className="ptp" onClick={openwhatsapp}>
             <div className="icon">
               <svg
                 width="20"

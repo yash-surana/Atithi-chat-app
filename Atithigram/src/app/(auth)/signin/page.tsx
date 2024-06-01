@@ -3,6 +3,8 @@ import LoginButton from '@/components/button/LoginButton'
 import { getAuthSession } from '@/lib/auth'
 import Image from 'next/image';
 import logo from '../../../../public/image.png';
+import CreatePostOuterBox from "@/components/CreatePostOuterBox"
+import FeedPage from "@/components/feed/FeedPage"
 async function page() {
     const session = await getAuthSession()
   return (
@@ -20,7 +22,11 @@ async function page() {
         <div className='min-h-full w-2/4 relative bg-white max-[900px]:w-full max-[900px]:flex max-[900px]:justify-center max-[900px]:items-center'>
                 <div className='h-full w-full flex justify-center items-center font-serif '>
                     <div className='max-w-xl min-w-fit mx-auto'>
-                        { !session ? <LoginButton/> : <h2 className='font-medium border p-4 rounded-md font-mono' >User alredy logged in</h2> }
+                        { !session ? <LoginButton/> : <main >
+      <FeedPage/>
+      {/* CREATE POST POPUP -> */}
+      <CreatePostOuterBox/>
+    </main> }
                     </div>
                 </div>
         </div>
