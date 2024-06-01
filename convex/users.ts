@@ -27,6 +27,7 @@ export const createUser = internalMutation({
       isOnline: true,
       role: args.role,
       isonboarding: args.isonboarding,
+      vendorType: undefined,
       events: [] // Default to an empty array
     };
 

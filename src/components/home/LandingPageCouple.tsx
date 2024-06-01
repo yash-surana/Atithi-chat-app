@@ -10,6 +10,7 @@ import { useQuery } from "convex/react";
 import ToDoList from "./ToDoList";
 import welcomeimg from "../../../public/welcomeimg.png";
 import { useParams } from "next/navigation";
+import toast from "react-hot-toast";
 
 const LandingPageCouple = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -354,7 +355,7 @@ const LandingPageCouple = () => {
         </section>
         {/* dashboard-widgets ends */}
         <div className="bottom-nav">
-          <a href="#" className="ptp">
+          <a href="/" className="ptp">
             <div className="icon">
               <svg
                 width="20"
@@ -388,7 +389,7 @@ const LandingPageCouple = () => {
             </div>
             <div className="text">Atithigram</div>
           </a>
-          <a href="#" className="ptp">
+          <a href="/channels" className="ptp">
             <div className="icon">
               <svg
                 width="20"
@@ -405,7 +406,7 @@ const LandingPageCouple = () => {
             </div>
             <div className="text">Channels</div>
           </a>
-          <a href="#" className="ptp">
+          <a href="#" className="ptp" onMouseDown={()=>{toast.success("Update profile actions coming soon")}} onTouchEnd={()=>{toast.success("Update profile actions coming soon")}}>
             <div className="icon">
               <svg
                 width="20"
