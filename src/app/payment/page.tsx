@@ -1,4 +1,4 @@
-
+"use client"
 import { ArrowDownRightFromCircle, ChevronRight, HandCoins } from "lucide-react";
 
 import "../../components/home/style.css";

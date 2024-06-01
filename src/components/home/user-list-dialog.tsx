@@ -102,7 +102,7 @@ const UserListDialog = () => {
 	return (
 		<Dialog>
 			<DialogTrigger>
-				<MessageSquareDiff size={20} />
+				<MessageSquareDiff size={20} className="icon-red"/>
 			</DialogTrigger>
 			<DialogContent>
 				<DialogHeader>

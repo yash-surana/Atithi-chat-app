@@ -29,12 +29,11 @@ const LeftPanel = () => {
     if (isLoading) return null;
 
     return (
-        <div className='w-1/4 border-gray-600 border-r'>
-            <div className='sticky top-0 bg-left-panel z-10'>
+        <div style={{width:"375px",position:"relative",top:"0",left:"0",backgroundColor:"#EDE2D5"}}>
+            <div className='fixed' style={{width:"375px"}}>
                 {/* Header */}
-                <div className='flex justify-between bg-gray-primary p-3 items-center'>
+                <div className='flex justify-between p-3 items-center' style={{backgroundColor:"#EDE2D5"}}>
                     <UserButton />
-
                     <div className='flex items-center gap-3'>
                         {isAuthenticated && <UserListDialog />}
                         <ThemeSwitch />
@@ -42,18 +41,18 @@ const LeftPanel = () => {
                 </div>
                 <div className='p-3 flex items-center'>
                     {/* Search */}
-                    <div className='relative h-10 mx-3 flex-1'>
+                    <div className='relative h-10 mx-3 flex-1' >
                         <Search
                             className='absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 z-10'
-                            size={18}
+                            size={17}
                         />
                         <Input
                             type='text'
-                            placeholder='Search or start a new chat'
-                            className='pl-10 py-2 text-sm w-full rounded shadow-sm bg-gray-primary focus-visible:ring-transparent'
+                            placeholder='Search'
+                            className='pl-10 py-2 text-sm w-full placeholder-gray focus-visible:ring-transparent'
+                            style={{backgroundColor:"#EDE2D5",border:"solid 1px #A8876F",borderRadius:"12px",color:"#B2947D"}}
                         />
                     </div>
-                    <ListFilter className='cursor-pointer' />
                 </div>
             </div>
             
@@ -109,7 +108,7 @@ const LeftPanel = () => {
             </article>
 
             {/* Chat List */}
-            <div className='my-3 flex flex-col gap-0 max-h-[80%] overflow-auto'>
+            <div className="flex flex-col gap-0 max-h-[80%] overflow-scroll" style={{marginTop:"26%",color:"brown",scrollbarWidth:"none",msOverflowStyle: "none",height:"610px"}}>
                 {/* Conversations will go here*/}
                 {conversations?.map((conversation) => (
                     <Conversation key={conversation._id} conversation={conversation} />
