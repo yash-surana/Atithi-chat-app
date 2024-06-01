@@ -10,6 +10,7 @@ export interface User {
   role: "user" | "vendor"; // Specify the valid values for role
   isonboarding: boolean;
   events: { eventID: Id<"events">; eventRole: "host" | "guest" | "vendor" }[]; // Add the events property
+  vendorType?: string; // Optional vendor type
   }
 
 // src/types.ts

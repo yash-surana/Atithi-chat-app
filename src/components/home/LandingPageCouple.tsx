@@ -10,6 +10,7 @@ import { useQuery } from "convex/react";
 import ToDoList from "./ToDoList";
 import welcomeimg from "../../../public/welcomeimg.png";
 import { useParams } from "next/navigation";
+import toast from "react-hot-toast";
 import LeftPanel from "./left-panel";
 import RightPanel from "./right-panel";
 
@@ -77,7 +78,7 @@ const LandingPageCouple = () => {
   const handleClick = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     alert("clicked");
     if (iframeRef.current) {
-      iframeRef.current.src = 'https://atithigram-602dhruviii-dhruvi-trivedis-projects.vercel.app/';
+      // iframeRef.current.src = 'https://atithigram.vercel.app/';
     }
   };
   
@@ -115,7 +116,7 @@ const LandingPageCouple = () => {
           <span id="close-iframe" onClick={closeIframe} style={{ position: 'absolute', top: '20px', right: '20px', fontSize: '24px', color: 'white', cursor: 'pointer' }}>×</span>
           <iframe id="iframe" src={iframeUrl} style={{ position: 'absolute', top: '50%', left: '50%', width: '80%', height: '80%', transform: 'translate(-50%, -50%)', border: 'none' }}></iframe>
         </div>
-        {/*<iframe className="iframe-cont" src="https://atithigram-602dhruviii-dhruvi-trivedis-projects.vercel.app/"></iframe> */}
+        <iframe className="iframe-cont" src="https://atithigram.vercel.app/"></iframe>
         {showWhatsapp ? (
         <main style={{position:"relative"}}>       
           <LeftPanel/>
@@ -387,7 +388,7 @@ const LandingPageCouple = () => {
         )}
         {/* dashboard-widgets ends */}
         <div className="bottom-nav">
-          <a href="#" className="ptp" onClick={opend}>
+          <a href="/" className="ptp" onClick={opend}>
             <div className="icon">
               <svg
                 width="20"
@@ -438,7 +439,7 @@ const LandingPageCouple = () => {
             </div>
             <div className="text">Channels</div>
           </a>
-          <a href="#" className="ptp">
+          <a href="#" className="ptp" onMouseDown={()=>{toast.success("Update profile actions coming soon")}} onTouchEnd={()=>{toast.success("Update profile actions coming soon")}}>
             <div className="icon">
               <svg
                 width="20"

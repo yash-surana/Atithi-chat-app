@@ -27,6 +27,7 @@ export const createUser = internalMutation({
       isOnline: true,
       role: args.role,
       isonboarding: args.isonboarding,
+      vendorType: undefined,
       events: [] // Default to an empty array
     };
 
@@ -171,5 +172,22 @@ export const getEventsById = query({
       .collect();
     console.log(events);
     return events;
+  }
+});
+
+export const updateVendorType = mutation({
+  args: { userId: v.id("users"), vendorType: v.optional(v.string()) },
+  async handler(ctx, args) {
+    const user = await ctx.db.get(args.userId);
+
+    if (!user) {
+      throw new ConvexError("User not found");
+    }
+
+    await ctx.db.patch(args.userId, {
+      vendorType: args.vendorType,
+    });
+
+    return await ctx.db.get(args.userId); // Return updated user
   }
 });

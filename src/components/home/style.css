@@ -150,13 +150,16 @@ body {
   flex-direction: row;
   position: static;
   justify-content: space-between;
+  align-items: center;
   overflow: hidden;
-  background: #df9d6380;
+  background: rgb(223, 157, 99);
+  padding: 10px;
+  
 }
-.head {
-  margin-right: 42%;
-  margin-top: 4%;
-  color: black;
+.head{
+  margin-right:42%;
+  /* margin-top: 4%; */
+  color:black;
   font-size: large;
   font-weight: bold;
 }
@@ -733,8 +736,11 @@ p {
   justify-content: space-around;
   align-items: center;
   background-color: #b77a68;
-  padding: 2%;
-  position:static;
+  padding: 10px 15px;
+  gap: 4px;
+
+  overflow: hidden;
+  position:sticky;
   bottom: 0;
   width: 100%;
   z-index: 1000; /* Ensure it stays above other elements */
@@ -756,9 +762,11 @@ p {
   align-items: center;
 }
 .bottom-nav a {
+  flex-grow: 1;
   color: black;
   text-decoration: none;
   text-align: center;
+  cursor: pointer;
 }
 
 .bottom-nav a .icon {
@@ -767,5 +775,7 @@ p {
 }
 
 .bottom-nav a .text {
-  font-size: 14px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-top: 4px;
 }
