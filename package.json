@@ -21,6 +21,7 @@
     "@types/chart.js": "^2.9.41",
     "@zegocloud/zego-uikit-prebuilt": "^2.0.1",
     "avvvatars-react": "^0.4.2",
+    "axios": "^1.7.2",
     "chart.js": "^4.4.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",

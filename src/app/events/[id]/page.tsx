@@ -5,7 +5,7 @@ import { useParams } from 'next/navigation';
 import { useQuery } from 'convex/react';
 import React from 'react';
 import { api } from '../../../../convex/_generated/api';
-import LandingPageCouple from '@/components/home/LandingPageCouple';
+import CoupleHomeScreen from '@/components/home/couple-home-screen';
 
 const EventPage: React.FC = () => {
   const params = useParams();
@@ -23,7 +23,7 @@ const EventPage: React.FC = () => {
 
   return (
     <div className="container mx-auto">
-      <LandingPageCouple />
+      <CoupleHomeScreen eventID={id || ""} event={event}/>
     </div>
   );
 };

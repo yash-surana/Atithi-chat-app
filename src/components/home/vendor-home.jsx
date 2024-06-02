@@ -4,7 +4,6 @@ import Avvvatars from "avvvatars-react";
 import { ChevronRight, X } from "lucide-react";
 
 import "./style.css";
-import DashboardHeader from "../layout/dashboardHeader";
 import AddOrJoinEvent from "./add-or-join-event";
 import { useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
@@ -68,112 +67,116 @@ const VendorHomeScreen = ({ loggedUser }) => {
   };
   const [showWhatsapp, setShowWhatsapp] = useState(false);
 
-
   const openwhatsapp = () => {
     setShowWhatsapp(true);
   };
-  const opend = ()=>{
+  const opend = () => {
     setopendashboard(true);
     setShowWhatsapp(false);
   };
 
-
   return (
     <>
-    {showWhatsapp ? (
-        <main style={{position:"relative"}}>       
-          <LeftPanel/>
-          <RightPanel/>        
+      {showWhatsapp ? (
+        <main style={{ position: "relative" }}>
+          <LeftPanel />
+          <RightPanel />
         </main>
-  
       ) : (
-      <div className="flex flex-col items-center justify-center min-h-screen h-full overflow-auto px-10 py-6 bg-[#F8ECDE] text-black text-center relative">
-        <div className="text-2xl font-bold text-center">All Events</div>
-        <ul className="py-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 self-center">
-          {eventsData.map((event) => (
-            <li
-              key={event.id}
-              onClick={() => setSelectedEvent(event)}
-              className="flex flex-row justify-start gap-6 items-center w-full min-h-[40px] border-b p-5 border-b-[#DF9D63] cursor-pointer hover:bg-[#eac09b] transition-all duration-300 ease-out"
-            >
-              <Avvvatars
-                style="shape"
-                value={event.name}
-                borderColor="#000000"
-                size={40}
-              />
-              <div>
-                <p className="text-base font-medium self-center">
-                  {event.name}
-                </p>
-              </div>
-              <ChevronRight className="w-6 h-6 ml-auto" />
-            </li>
-          ))}
-        </ul>
-
-        {selectedEvent && (
-          <Dialog.Root
-            open={!!selectedEvent}
-            onOpenChange={() => setSelectedEvent(null)}
-          >
-            <Dialog.Overlay className="fixed inset-0 bg-gray-800 bg-opacity-80" />
-            <Dialog.Content className="text-white fixed z-10 inset-0 flex items-center justify-center p-4 bg-[#f9f5f2]">
-              <div className="dialog-content bg-[#f9f5f2] rounded-lg overflow-hidden shadow-xl transform transition-all max-w-lg w-full p-6">
-                <Dialog.Title>
-                  <div className=" flex justify-end items-center">
-                    <Dialog.Close asChild>
-                      <button className="text-gray-500 hover:text-gray-700 transition-all duration-300 ease-out ">
-                        <X className="w-6 h-6" />
-                      </button>
-                    </Dialog.Close>
-                  </div>
-                  <h3 className="text-2xl font-bold mb-6 text-[#9A2143]">
-                    {selectedEvent.name}
-                  </h3>
-                </Dialog.Title>
-                <div className="mt-4 text-white">
-                  <p>
-                    <strong>Date:</strong> {selectedEvent.startDate} -{" "}
-                    {selectedEvent.endDate}
+        <div className="flex flex-col items-center justify-center min-h-screen h-full mb-20 overflow-auto px-10 py-6 bg-[#F8ECDE] text-black text-center relative">
+          <div className="text-2xl font-bold text-center">All Events</div>
+          <ul className="py-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 self-center">
+            {eventsData.map((event) => (
+              <li
+                key={event.id}
+                onClick={() => setSelectedEvent(event)}
+                className="flex flex-row justify-start gap-6 items-center w-full min-h-[40px] border-b p-5 border-b-[#DF9D63] cursor-pointer hover:bg-[#eac09b] transition-all duration-300 ease-out"
+              >
+                <Avvvatars
+                  style="shape"
+                  value={event.name}
+                  borderColor="#000000"
+                  size={40}
+                />
+                <div>
+                  <p className="text-base font-medium self-center">
+                    {event.name}
                   </p>
-                  <p>
-                    <strong>Duration:</strong> {selectedEvent.duration}
-                  </p>
-                  <p>
-                    <strong>Event Type:</strong> {selectedEvent.type}
-                  </p>
-                  <div className="mt-4">
-                    <h3 className="text-lg font-bold">Tasks To Be Done:</h3>
-                    <ul className="list-disc pl-5">
-                      {selectedEvent.tasks.map((task, index) => (
-                        <li key={index}>{task}</li>
-                      ))}
-                    </ul>
-                  </div>
-                  <div className="mt-4">
-                    <h3 className="text-lg font-bold">Payments To Be Done:</h3>
-                    <ul className="list-disc pl-5">
-                      {selectedEvent.payments.map((payment, index) => (
-                        <li key={index}>{payment}</li>
-                      ))}
-                    </ul>
-                  </div>
                 </div>
-                <button
-                  className="mt-6 px-10 py-2 rounded-lg border border-[#9A2143] text-[#9A2143] hover:bg-[#9A2143] hover:text-white transition-all duration-300 ease-out"
-                  onClick={handleMarkAsCompleted}
-                >
-                  Mark as Completed
-                </button>
-              </div>
-            </Dialog.Content>
-          </Dialog.Root>
-        )}
-        <AddOrJoinEvent loggedUser={loggedUser} />
-      </div>
+                <ChevronRight className="w-6 h-6 ml-auto" />
+              </li>
+            ))}
+          </ul>
+
+          {selectedEvent && (
+            <Dialog.Root
+              open={!!selectedEvent}
+              onOpenChange={() => setSelectedEvent(null)}
+            >
+              <Dialog.Overlay className="fixed inset-0 bg-gray-800 bg-opacity-80" />
+              <Dialog.Content className="text-white fixed z-10 inset-0 flex items-center justify-center p-4 bg-[#f9f5f2]">
+                <div className="dialog-content bg-[#f9f5f2] rounded-lg overflow-hidden shadow-xl transform transition-all max-w-lg w-full p-6">
+                  <Dialog.Title>
+                    <div className=" flex justify-end items-center">
+                      <Dialog.Close asChild>
+                        <button className="text-gray-500 hover:text-gray-700 transition-all duration-300 ease-out ">
+                          <X className="w-6 h-6" />
+                        </button>
+                      </Dialog.Close>
+                    </div>
+                    <h3 className="text-2xl font-bold mb-6 text-[#9A2143]">
+                      {selectedEvent.name}
+                    </h3>
+                  </Dialog.Title>
+                  <div className="mt-4 text-white">
+                    <p>
+                      <strong>Date:</strong> {selectedEvent.startDate} -{" "}
+                      {selectedEvent.endDate}
+                    </p>
+                    <p>
+                      <strong>Duration:</strong> {selectedEvent.duration}
+                    </p>
+                    <p>
+                      <strong>Event Type:</strong> {selectedEvent.type}
+                    </p>
+                    <div className="mt-4">
+                      <h3 className="text-lg font-bold">Tasks To Be Done:</h3>
+                      <ul className="list-disc pl-5">
+                        {selectedEvent.tasks.map((task, index) => (
+                          <li key={index}>{task}</li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div className="mt-4">
+                      <h3 className="text-lg font-bold">
+                        Payments To Be Done:
+                      </h3>
+                      <ul className="list-disc pl-5">
+                        {selectedEvent.payments.map((payment, index) => (
+                          <li key={index}>{payment}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                  <button
+                    className="mt-6 px-10 py-2 rounded-lg border border-[#9A2143] text-[#9A2143] hover:bg-[#9A2143] hover:text-white transition-all duration-300 ease-out"
+                    onClick={handleMarkAsCompleted}
+                  >
+                    Mark as Completed
+                  </button>
+                </div>
+              </Dialog.Content>
+            </Dialog.Root>
+          )}
+          <AddOrJoinEvent
+            loggedUser={loggedUser}
+            text={
+              "Want to organize an event as a vendor, or join an existing one?"
+            }
+          />
+        </div>
       )}
-      <div className="flex flex-row justify-evenly items-center bottom-nav">
+      <div className="flex flex-row justify-evenly items-center bottom-nav mt-20 !static">
         <a href="/" className="ptp">
           <div className="icon">
             <svg
@@ -191,7 +194,7 @@ const VendorHomeScreen = ({ loggedUser }) => {
           </div>
           <div className="text">Home</div>
         </a>
-        <a href="#" className="ptp"onClick={openwhatsapp}>
+        <a href="#" className="ptp" onClick={openwhatsapp}>
           <div className="icon">
             <img src="/icons/ChatsCircle.svg" alt="Chat" className="w-5 h-5" />
           </div>

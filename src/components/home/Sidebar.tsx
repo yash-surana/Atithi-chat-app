@@ -5,9 +5,10 @@ interface SidebarProps {
     isOpen: boolean;
     closeSidebar: () => void;
     onSendInvitesClick: (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void; // New prop
+    eventID : string; 
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ isOpen, closeSidebar, onSendInvitesClick }) => {
+const Sidebar: React.FC<SidebarProps> = ({ isOpen, closeSidebar, onSendInvitesClick, eventID }) => {
 
     const openIframe = (url: string) => {
         const iframeContainer = document.getElementById('iframe-container');
@@ -25,11 +26,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, closeSidebar, onSendInvitesCl
                 <img width="20" height="20" src="https://img.icons8.com/wired/64/FFFFFF/pencil.png" alt="pencil" />&nbsp;
                 Create Event
             </a>
-            <a href="#" style={{ display: "flex", flexDirection: "row" }}>
+            <a href={`/events/${eventID}/vendors`} style={{ display: "flex", flexDirection: "row" }}>
                 <img width="20" height="20" src="https://img.icons8.com/dotty/80/FFFFFF/food-cart.png" alt="food-cart" />&nbsp;
                 Add Vendors
             </a>
-            <a href="#" style={{ display: "flex", flexDirection: "row" }}>
+            <a href={`/events/${eventID}/guests`} style={{ display: "flex", flexDirection: "row" }}>
                 <img width="20" height="20" src="https://img.icons8.com/dotty/80/FFFFFF/guest--.png" alt="guest--" />&nbsp;
                 Guest List
             </a>
