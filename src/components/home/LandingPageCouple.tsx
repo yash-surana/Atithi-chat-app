@@ -4,6 +4,7 @@ import Sidebar from "./Sidebar";
 import Image from "next/image";
 import { api } from "../../../convex/_generated/api";
 
+import SendInvites from "./sendinvites";
 import PieChart from "./Piechart";
 import "./style.css";
 import { useQuery } from "convex/react";
@@ -14,10 +15,12 @@ import toast from "react-hot-toast";
 import LeftPanel from "./left-panel";
 import RightPanel from "./right-panel";
 
+
 const LandingPageCouple = () => {
   const [activePanel, setActivePanel] = useState('left');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [iframeUrl, setIframeUrl] = useState("");
+  const [showSendInvites, setShowSendInvites] = useState(false); // New state
 
   const openSidebar = () => setIsSidebarOpen(true);
   const closeSidebar = () => setIsSidebarOpen(false);
@@ -27,6 +30,10 @@ const LandingPageCouple = () => {
 
   const openwhatsapp = () => {
     setShowWhatsapp(true);
+    let ghr=document.getElementsByClassName("utu");
+    for (let i = 0; i < ghr.length; i++) {
+      (ghr[i] as HTMLElement).style.display = 'none';
+  }
   };
   const opend = ()=>{
     setopendashboard(true);
@@ -81,13 +88,22 @@ const LandingPageCouple = () => {
       // iframeRef.current.src = 'https://atithigram.vercel.app/';
     }
   };
+  const handleSendInvitesClick = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    event.preventDefault();
+    setShowSendInvites(true); // Show SendInvites
+    let cont=document.getElementsByClassName("ptoi");
+    for (let i = 0; i < cont.length; i++) {
+      (cont[i] as HTMLElement).style.display = 'none';
+  }
+  };
   
   return (
     <div className="parent-div">
       <div className="dashboardv2-2136203" id="id-2136203">
         {/*sidebar code*/}
-        <Sidebar isOpen={isSidebarOpen} closeSidebar={closeSidebar} />
+        <Sidebar isOpen={isSidebarOpen} closeSidebar={closeSidebar} onSendInvitesClick={handleSendInvitesClick}/>
         {/*header starts*/}
+        
         <section className="header-2136205" id="id-2136205">
           {/*menu bar*/}
           <div
@@ -116,7 +132,8 @@ const LandingPageCouple = () => {
           <span id="close-iframe" onClick={closeIframe} style={{ position: 'absolute', top: '20px', right: '20px', fontSize: '24px', color: 'white', cursor: 'pointer' }}>×</span>
           <iframe id="iframe" src={iframeUrl} style={{ position: 'absolute', top: '50%', left: '50%', width: '80%', height: '80%', transform: 'translate(-50%, -50%)', border: 'none' }}></iframe>
         </div>
-        <iframe className="iframe-cont" src="https://atithigram.vercel.app/"></iframe>
+        <div className="utu">
+{showSendInvites && <SendInvites/>}</div>
         {showWhatsapp ? (
         <main style={{position:"relative"}}>       
           <LeftPanel/>
@@ -124,7 +141,8 @@ const LandingPageCouple = () => {
         </main>
   
       ) : (
-        <div>
+        
+        <div className="ptoi">
         <section className="dashboardwidget-2136209" id="id-2136209">
           <div className="welcomeframe-2136367" id="id-2136367">
             <div className="textframe-2136369" id="id-2136369">

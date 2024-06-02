@@ -779,3 +779,43 @@ p {
   font-weight: 600;
   margin-top: 4px;
 }
+.tooltip {
+  position: relative;
+  display: inline-block;
+  align-self: flex-end; /* Adjust as needed */
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 140px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  font-size: small;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%; /* Adjust as needed */
+  left: 50%;
+  margin-left: -80px; /* Use half of the tooltip width to center it */
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%; /* At the bottom of the tooltip */
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  font-size: smaller;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
