@@ -1,22 +1,35 @@
-"use client"
-import React, { useEffect, useState } from 'react'
-import DashboardHeader from '@/components/layout/dashboardHeader';
+"use client";
+import React, { useEffect, useState } from "react";
+import DashboardHeader from "../../components/layout/dashboardHeader";
+import DietaryPref from "../../components/home/dietarypref";
+import Dj from "../../components/home/dj";
+import Photographer from "../../components/home/Photographer";
+import { useQuery } from "convex/react";
+import { api } from "../../../convex/_generated/api";
 
 const Services = () => {
-    const [loggedUser, setLoggedUser] = useState({});
+  const [loggedUser, setLoggedUser] = useState({});
+
   useEffect(() => {
-    if (window) {
+    if (typeof window !== "undefined") {
       const storedUser = window.localStorage.getItem("loggedinUser");
       if (storedUser !== null) {
         setLoggedUser(JSON.parse(storedUser));
       }
     }
-  }, [])
-    return (
-      <>
+  }, []);
+
+  return (
+    <>
       <DashboardHeader title={loggedUser?.vendorType || "Photographer"} />
-      <div className='h-full min-h-screen bg-[#F8ECDE]'></div>
-    <div className="flex flex-row justify-evenly items-center bottom-nav">
+      {loggedUser.vendorType === "DJ" && <Dj />}
+      {loggedUser.vendorType === "Photographer" && <Photographer />}
+      {loggedUser.vendorType == "Caterer" && (
+        <div className='h-full min-h-screen bg-[#F8ECDE]'>
+        <DietaryPref />
+      </div>
+      )}
+      <div className="flex flex-row justify-evenly items-center bottom-nav">
         <a href="/" className="ptp">
           <div className="icon">
             <svg
@@ -40,7 +53,7 @@ const Services = () => {
           </div>
           <div className="text">Channels</div>
         </a>
-        <a href={`/payment`} className="ptp">
+        <a href="/payment" className="ptp">
           <div className="icon">
             <img src="/icons/payment.svg" alt="Payment" className="w-5 h-5" />
           </div>
@@ -58,8 +71,7 @@ const Services = () => {
         </a>
       </div>
     </>
-    
-  )
-}
+  );
+};
 
-export default Services
+export default Services;
