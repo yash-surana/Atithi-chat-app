@@ -4,9 +4,11 @@ import './Sidebar.css'; // Import the CSS file for styling
 interface SidebarProps {
     isOpen: boolean;
     closeSidebar: () => void;
+    onSendInvitesClick: (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void; // New prop
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ isOpen, closeSidebar }) => {
+const Sidebar: React.FC<SidebarProps> = ({ isOpen, closeSidebar, onSendInvitesClick }) => {
+
     const openIframe = (url: string) => {
         const iframeContainer = document.getElementById('iframe-container');
         const iframe = document.getElementById('iframe') as HTMLIFrameElement;
@@ -35,15 +37,15 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, closeSidebar }) => {
                 <img width="20" height="20" src="https://img.icons8.com/wired/64/FFFFFF/workflow.png" alt="workflow" />&nbsp;
                 Event Workflow
             </a>
-            <a href="#" style={{ display: "flex", flexDirection: "row" }}>
+            <a href="#" style={{ display: "flex", flexDirection: "row" }} onClick={onSendInvitesClick}>
                 <img width="20" height="20" src="https://img.icons8.com/dotty/80/FFFFFF/online-paint-tool.png" alt="online-paint-tool" />&nbsp;
-                Design E-Invites
+                Send E-Invites
             </a>
             <a href="#" style={{ display: "flex", flexDirection: "row" }}>
                 <img width="20" height="20" src="https://img.icons8.com/ios/50/FFFFFF/multiple-pages-mode--v2.png" alt="multiple-pages-mode--v2" />&nbsp;
                 Spatial Arrangement
             </a>
-            <a href="#" style={{ display: "flex", flexDirection: "row" }}>
+            <a href="#" style={{ display: "flex", flexDirection: "row" }} >
                 <img width="20" height="20" src="https://img.icons8.com/dotty/80/FFFFFF/card-in-use.png" alt="card-in-use" />&nbsp;
                 Payments
             </a>

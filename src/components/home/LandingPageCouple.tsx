@@ -4,6 +4,7 @@ import Sidebar from "./Sidebar";
 import Image from "next/image";
 import { api } from "../../../convex/_generated/api";
 
+import SendInvites from "./sendinvites";
 import PieChart from "./Piechart";
 import "./style.css";
 import { useQuery } from "convex/react";
@@ -14,11 +15,13 @@ import toast from "react-hot-toast";
 import LeftPanel from "./left-panel";
 import RightPanel from "./right-panel";
 
+
 const LandingPageCouple = () => {
   const [activePanel, setActivePanel] = useState('left');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [iframeUrl, setIframeUrl] = useState("");
-  const [isOpen, setIsOpen] = useState(false);
+  const [showSendInvites, setShowSendInvites] = useState(false); // New state
+  const [showatithigran,setatithtigram]=useState(false);
 
   const openSidebar = () => setIsSidebarOpen(true);
   const closeSidebar = () => setIsSidebarOpen(false);
@@ -28,6 +31,10 @@ const LandingPageCouple = () => {
 
   const openwhatsapp = () => {
     setShowWhatsapp(true);
+    let ghr=document.getElementsByClassName("utu");
+    for (let i = 0; i < ghr.length; i++) {
+      (ghr[i] as HTMLElement).style.display = 'none';
+  }
   };
   const opend = ()=>{
     setopendashboard(true);
@@ -36,7 +43,6 @@ const LandingPageCouple = () => {
 
   const openIframe = (url) => {
     setIframeUrl(url);
-    setIsOpen(true);
     const iframeContainer = document.getElementById('iframe-container');
     if (iframeContainer) {
       iframeContainer.style.display = 'block';
@@ -46,7 +52,6 @@ const LandingPageCouple = () => {
 
   const closeIframe = () => {
     setIframeUrl("");
-    setIsOpen(false);
     const iframeContainer = document.getElementById('iframe-container');
     if (iframeContainer) {
       iframeContainer.style.display = 'none';
@@ -81,19 +86,26 @@ const LandingPageCouple = () => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
   const handleClick = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-    
-    if (iframeRef.current) {
-      iframeRef.current.src = 'https://atithigram.vercel.app/';
-    }
-    openIframe('https://atithigram.vercel.app/');
+    alert("clicked");
+    setatithtigram(true);
+    setopendashboard(false);
+  };
+  const handleSendInvitesClick = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    event.preventDefault();
+    setShowSendInvites(true); // Show SendInvites
+    let cont=document.getElementsByClassName("ptoi");
+    for (let i = 0; i < cont.length; i++) {
+      (cont[i] as HTMLElement).style.display = 'none';
+  }
   };
   
   return (
     <div className="parent-div">
       <div className={`dashboardv2-2136203 ${iframeUrl==="" ? "overflow-auto" : "overflow-hidden"}`} id="id-2136203">
         {/*sidebar code*/}
-        <Sidebar isOpen={isSidebarOpen} closeSidebar={closeSidebar} />
+        <Sidebar isOpen={isSidebarOpen} closeSidebar={closeSidebar} onSendInvitesClick={handleSendInvitesClick}/>
         {/*header starts*/}
+        
         <section className="header-2136205" id="id-2136205">
           {/*menu bar*/}
           <div
@@ -118,24 +130,16 @@ const LandingPageCouple = () => {
           <span className="head">Home</span>
         </section>
         {/*header ends*/}
-        <div
-        id="iframe-container"
-        className={`fixed top-0 left-0 w-full h-full bg-black bg-opacity-80 z-50 overflow-hidden ${isOpen ? 'block' : 'hidden'}`}
-      >
-        <span
-          id="close-iframe"
-          onClick={closeIframe}
-          className="absolute top-5 right-5 text-white text-3xl cursor-pointer"
-        >
-          &times;
-        </span>
-        <iframe
-          id="iframe"
-          src={iframeUrl}
-          className="absolute top-1/4 left-1/2 w-4/5 h-[75vh] transform -translate-x-1/2 -translate-y-1/2 border-none"
-        ></iframe>
-      </div>
-        {/* {<iframe className="iframe-cont" src="https://atithigram.vercel.app/"></iframe>} */}
+        <div id="iframe-container" style={{ display: 'none', position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0, 0, 0, 0.8)', zIndex: 1000 }}>
+          <span id="close-iframe" onClick={closeIframe} style={{ position: 'absolute', top: '20px', right: '20px', fontSize: '24px', color: 'white', cursor: 'pointer' }}>×</span>
+          <iframe id="iframe" src={iframeUrl} style={{ position: 'absolute', top: '50%', left: '50%', width: '80%', height: '80%', transform: 'translate(-50%, -50%)', border: 'none' }}></iframe>
+        </div>
+        <div className="utu">
+{showSendInvites && <SendInvites/>}</div>
+{showatithigran ?(
+  <iframe src="https://atithigram.vercel.app/" frameBorder="0"></iframe>
+
+):(<div></div>)}
         {showWhatsapp ? (
         <main style={{position:"relative"}}>       
           <LeftPanel/>
@@ -143,7 +147,8 @@ const LandingPageCouple = () => {
         </main>
   
       ) : (
-        <div>
+        
+        <div className="ptoi">
         <section className="dashboardwidget-2136209" id="id-2136209">
           <div className="welcomeframe-2136367" id="id-2136367">
             <div className="textframe-2136369" id="id-2136369">

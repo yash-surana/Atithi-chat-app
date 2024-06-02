@@ -8,7 +8,8 @@ import DashboardHeader from "../layout/dashboardHeader";
 import AddOrJoinEvent from "./add-or-join-event";
 import { useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
-
+import LeftPanel from "./left-panel";
+import RightPanel from "./right-panel";
 const eventsData = [
   {
     id: "1",
@@ -65,9 +66,27 @@ const VendorHomeScreen = ({ loggedUser }) => {
         : eventsData[currentEvent + 1];
     setSelectedEvent(newEvent);
   };
+  const [showWhatsapp, setShowWhatsapp] = useState(false);
+
+
+  const openwhatsapp = () => {
+    setShowWhatsapp(true);
+  };
+  const opend = ()=>{
+    setopendashboard(true);
+    setShowWhatsapp(false);
+  };
+
 
   return (
     <>
+    {showWhatsapp ? (
+        <main style={{position:"relative"}}>       
+          <LeftPanel/>
+          <RightPanel/>        
+        </main>
+  
+      ) : (
       <div className="flex flex-col items-center justify-center min-h-screen h-full overflow-auto px-10 py-6 bg-[#F8ECDE] text-black text-center relative">
         <div className="text-2xl font-bold text-center">All Events</div>
         <ul className="py-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 self-center">
@@ -153,6 +172,7 @@ const VendorHomeScreen = ({ loggedUser }) => {
         )}
         <AddOrJoinEvent loggedUser={loggedUser} />
       </div>
+      )}
       <div className="flex flex-row justify-evenly items-center bottom-nav">
         <a href="/" className="ptp">
           <div className="icon">
@@ -171,7 +191,7 @@ const VendorHomeScreen = ({ loggedUser }) => {
           </div>
           <div className="text">Home</div>
         </a>
-        <a href="/channels" className="ptp">
+        <a href="#" className="ptp"onClick={openwhatsapp}>
           <div className="icon">
             <img src="/icons/ChatsCircle.svg" alt="Chat" className="w-5 h-5" />
           </div>
