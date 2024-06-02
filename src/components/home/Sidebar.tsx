@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './Sidebar.css'; // Import the CSS file for styling
+import AddEvent from './add-event';
 
 interface SidebarProps {
     isOpen: boolean;
@@ -9,6 +10,19 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, closeSidebar, onSendInvitesClick, eventID }) => {
+    const [showPopup, setShowPopup] = useState(false);
+  const handleClosePopup = () => {
+    setShowPopup(false);
+  };
+  const [loggedUser, setLoggedUser] = useState({});
+  useEffect(() => {
+    if (window) {
+      const storedUser = window.localStorage.getItem("loggedinUser");
+      if (storedUser !== null) {
+        setLoggedUser(JSON.parse(storedUser));
+      }
+    }
+  }, [])
 
     const openIframe = (url: string) => {
         const iframeContainer = document.getElementById('iframe-container');
@@ -22,7 +36,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, closeSidebar, onSendInvitesCl
     return (
         <div className={`sidebar ${isOpen ? 'open' : ''}`}>
             <button className="closebtn" onClick={closeSidebar}>×</button>
-            <a href="#" style={{ display: "flex", flexDirection: "row" }}>
+            <a href="/" style={{ display: "flex", flexDirection: "row" }}>
+            <img width="20" height="20" src="https://img.icons8.com/ios/50/FFFFFF/multiple-pages-mode--v2.png" alt="multiple-pages-mode--v2" />&nbsp;
+               
+                All Events
+            </a>
+            <a href="#" style={{ display: "flex", flexDirection: "row" }} onClick={()=>setShowPopup(true)}>
                 <img width="20" height="20" src="https://img.icons8.com/wired/64/FFFFFF/pencil.png" alt="pencil" />&nbsp;
                 Create Event
             </a>
@@ -46,7 +65,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, closeSidebar, onSendInvitesCl
                 <img width="20" height="20" src="https://img.icons8.com/ios/50/FFFFFF/multiple-pages-mode--v2.png" alt="multiple-pages-mode--v2" />&nbsp;
                 Spatial Arrangement
             </a>
-            <a href="#" style={{ display: "flex", flexDirection: "row" }} >
+            <a href={`/events/${eventID}/payments`} style={{ display: "flex", flexDirection: "row" }} >
                 <img width="20" height="20" src="https://img.icons8.com/dotty/80/FFFFFF/card-in-use.png" alt="card-in-use" />&nbsp;
                 Payments
             </a>
@@ -62,6 +81,9 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, closeSidebar, onSendInvitesCl
                 <img width="20" height="20" src="https://img.icons8.com/dotty/80/FFFFFF/settings.png" alt="settings" />&nbsp;
                 Settings
             </a>
+            {showPopup && loggedUser && (
+        <AddEvent onClose={handleClosePopup} loggedUser={loggedUser} />
+      )}
         </div>
     );
 };

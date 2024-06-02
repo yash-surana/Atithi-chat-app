@@ -14,7 +14,7 @@ import LeftPanel from "./left-panel";
 import RightPanel from "./right-panel";
 
 
-const LandingPageCouple = ({eventID = "", children}) => {
+const LandingPageCouple = ({eventID = "", children, title}) => {
   const [activePanel, setActivePanel] = useState('left');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [iframeUrl, setIframeUrl] = useState("");
@@ -104,7 +104,7 @@ const LandingPageCouple = ({eventID = "", children}) => {
             </div>
           </div>
           {/*menubar code ends*/}
-          <span className="head">Home</span>
+          <span className="head">{title || "Home"}</span>
         </section>
         {/*header ends*/}
         <div id="iframe-container" style={{ display: 'none', position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0, 0, 0, 0.8)', zIndex: 1000 }}>

@@ -96,7 +96,7 @@ const Vendors = () => {
   };
 
   return (
-    <LandingPageCouple eventID={id}>
+    <LandingPageCouple eventID={id} title={"Vendor"}>
       <VendorsDashboard />
     </LandingPageCouple>
   );

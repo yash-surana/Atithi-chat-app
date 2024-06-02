@@ -83,7 +83,7 @@ const VendorHomeScreen = ({ loggedUser }) => {
           <RightPanel />
         </main>
       ) : (
-        <div className="flex flex-col items-center justify-center min-h-screen h-full mb-20 overflow-auto px-10 py-6 bg-[#F8ECDE] text-black text-center relative">
+        <div className="flex flex-col items-center justify-center min-h-screen h-full mb-20 overflow-auto px-10 bg-[#F8ECDE] text-black text-center relative">
           <div className="text-2xl font-bold text-center">All Events</div>
           <ul className="py-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 self-center">
             {eventsData.map((event) => (

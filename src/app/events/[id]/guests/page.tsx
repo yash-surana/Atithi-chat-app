@@ -100,7 +100,7 @@ const Guests = () => {
 
 
   return (
-    <LandingPageCouple eventID={id}>
+    <LandingPageCouple eventID={id} title={"Guests"}>
       <GuestsDashboard />
     </LandingPageCouple>
   );
