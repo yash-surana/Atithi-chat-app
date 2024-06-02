@@ -142,7 +142,7 @@ body {
 }
 .header-2136205 {
   width: 100%;
-  height: 4%;
+  height: 6.65%;
   opacity: 1;
   z-index: 1;
   transform: rotate(0deg);
@@ -742,7 +742,7 @@ p {
   gap: 4px;
 
   overflow: hidden;
-  position: sticky; /* Change to fixed */
+  position: static; /* Change to fixed */
   bottom: 0; /* Fix it to the bottom */
   width: 100%;
   z-index: 1000; /* Ensure it stays above other elements */
