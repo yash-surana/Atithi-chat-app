@@ -21,6 +21,7 @@ const LandingPageCouple = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [iframeUrl, setIframeUrl] = useState("");
   const [showSendInvites, setShowSendInvites] = useState(false); // New state
+  const [showatithigran,setatithtigram]=useState(false);
 
   const openSidebar = () => setIsSidebarOpen(true);
   const closeSidebar = () => setIsSidebarOpen(false);
@@ -84,9 +85,8 @@ const LandingPageCouple = () => {
 
   const handleClick = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     alert("clicked");
-    if (iframeRef.current) {
-      // iframeRef.current.src = 'https://atithigram.vercel.app/';
-    }
+    setatithtigram(true);
+    setopendashboard(false);
   };
   const handleSendInvitesClick = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     event.preventDefault();
@@ -134,6 +134,10 @@ const LandingPageCouple = () => {
         </div>
         <div className="utu">
 {showSendInvites && <SendInvites/>}</div>
+{showatithigran ?(
+  <iframe src="https://atithigram.vercel.app/" frameBorder="0"></iframe>
+
+):(<div></div>)}
         {showWhatsapp ? (
         <main style={{position:"relative"}}>       
           <LeftPanel/>
