@@ -46,6 +46,7 @@ const LandingPageCouple = () => {
     const iframeContainer = document.getElementById('iframe-container');
     if (iframeContainer) {
       iframeContainer.style.display = 'block';
+      document.body.style.overflow = 'hidden';
     }
   };
 
@@ -54,6 +55,7 @@ const LandingPageCouple = () => {
     const iframeContainer = document.getElementById('iframe-container');
     if (iframeContainer) {
       iframeContainer.style.display = 'none';
+      document.body.style.overflow = 'auto';
     }
   };
 
@@ -99,7 +101,7 @@ const LandingPageCouple = () => {
   
   return (
     <div className="parent-div">
-      <div className="dashboardv2-2136203" id="id-2136203">
+      <div className={`dashboardv2-2136203 ${iframeUrl==="" ? "overflow-auto" : "overflow-hidden"}`} id="id-2136203">
         {/*sidebar code*/}
         <Sidebar isOpen={isSidebarOpen} closeSidebar={closeSidebar} onSendInvitesClick={handleSendInvitesClick}/>
         {/*header starts*/}
