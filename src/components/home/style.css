@@ -742,7 +742,7 @@ p {
   gap: 4px;
 
   overflow: hidden;
-  position: fixed; /* Change to fixed */
+  position: sticky; /* Change to fixed */
   bottom: 0; /* Fix it to the bottom */
   width: 100%;
   z-index: 1000; /* Ensure it stays above other elements */

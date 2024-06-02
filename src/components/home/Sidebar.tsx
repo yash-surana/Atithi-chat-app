@@ -50,11 +50,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, closeSidebar, onSendInvitesCl
                 Payments
             </a>
             <a href="#" onClick={() => openIframe('https://poseperfect.streamlit.app/?embed=true')} style={{ display: "flex", flexDirection: "row" }}>
-                <img width="20" height="20" src="https://img.icons8.com/dotty/80/FFFFFF/card-in-use.png" alt="card-in-use" />&nbsp;
+            <img width="20" height="20" src="https://img.icons8.com/windows/20/FFFFFF/t-pose.png" alt="t-pose"/>&nbsp;
                 AI Pose Suggestion
             </a>
             <a href="#" onClick={() => openIframe('https://glambot.streamlit.app/?embed=true')} style={{ display: "flex", flexDirection: "row" }}>
-                <img width="20" height="20" src="https://img.icons8.com/dotty/80/FFFFFF/card-in-use.png" alt="card-in-use" />&nbsp;
+            <img width="20" height="20" src="https://img.icons8.com/ios/50/FFFFFF/formal-outfit.png" alt="formal-outfit"/>&nbsp;
                 AI Outfit Suggestion
             </a>
             <a href="#" style={{ display: "flex", flexDirection: "row" }}>
