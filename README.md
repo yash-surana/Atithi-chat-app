@@ -98,7 +98,7 @@ npx convex dev
 
 ## Demo Video
 ### User side
-![Demo](./uservideo.gif)
+![Demo](./uv.gif)
 ### Vendor side
 ![Demo](./vendorvideo.gif)
 
