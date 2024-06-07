@@ -1,4 +1,4 @@
-![image](https://github.com/602dhruviii/Atithi-chat-app/assets/93305785/c225d202-082c-48ed-8292-77b59a6f6c52)# Atithi Event Website
+# Atithi Event Website
 
 Welcome to the Atithi Event Website! Our platform is designed to cater to two primary users: vendors and couples/users who wish to host events. Below you'll find a detailed guide on how to navigate and utilize the features available on our website.
 
